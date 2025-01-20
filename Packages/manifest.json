@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.abrds.jam-starter": "https://github.com/abr-designs/jam-starter-package.git#v0.0.4-6000",
+    "com.abrds.jam-starter": "https://github.com/abr-designs/jam-starter-package.git#unity/version-support/6000",
     "com.unity.ai.navigation": "2.0.5",
     "com.unity.collab-proxy": "2.6.0",
     "com.unity.ide.rider": "3.0.31",

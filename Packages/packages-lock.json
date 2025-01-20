@@ -8,7 +8,7 @@
       "hash": "f3ddbf09e20fc0c55b4468b86ccf05f0f5b04d25"
     },
     "com.abrds.jam-starter": {
-      "version": "https://github.com/abr-designs/jam-starter-package.git#v0.0.4-6000",
+      "version": "https://github.com/abr-designs/jam-starter-package.git#unity/version-support/6000",
       "depth": 0,
       "source": "git",
       "dependencies": {
@@ -17,7 +17,7 @@
         "com.unity.cinemachine": "3.1.2",
         "com.unity.inputsystem": "1.11.2"
       },
-      "hash": "faef68c0fe7656e193179bff549f41a94f898451"
+      "hash": "e3ee128bcca0ce48251f411efd0bd1920a604a45"
     },
     "com.dbrizov.naughtyattributes": {
       "version": "https://github.com/dbrizov/NaughtyAttributes.git#upm",
