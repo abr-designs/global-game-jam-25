@@ -36,6 +36,14 @@ namespace Protoype.Alex
             CheckForCollisions();
         }
 
+        private void OnDestroy()
+        {
+            foreach (var overlappedActor in m_overlappedActors)
+            {
+                RemoveAffectors(overlappedActor);
+            }
+        }
+
         //Anomaly Functions
         //============================================================================================================//
 

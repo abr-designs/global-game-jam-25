@@ -27,15 +27,22 @@ namespace Protoype.Alex
         public ScaleableValue bulletSize;
         public Vector3[] localShootDirections;
 
+        protected Vector3 startingScale;
+
         //Unity Functions
         //============================================================================================================//
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
             GameController.RegisterActor(this);
         }
 
-        private void OnDisable()
+        protected virtual void Start()
+        {
+            startingScale = transform.localScale;
+        }
+
+        protected virtual void OnDisable()
         {
             GameController.DeRegisterActor(this);
         }

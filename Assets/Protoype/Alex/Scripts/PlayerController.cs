@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Utilities.Tweening;
 
 namespace Protoype.Alex
 {
@@ -9,11 +10,28 @@ namespace Protoype.Alex
 
         //Unity Functions
         //============================================================================================================//
-        
-        private void Start()
+
+        protected override void OnEnable()
         {
-            m_mainCamera = Camera.main;
+            base.OnEnable();
+            size.OnValueChanged += OnSizeChanged;
         }
+
+        protected override void Start()
+        {
+            base.Start();
+            
+            m_mainCamera = Camera.main;
+            
+        }
+        
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            size.OnValueChanged -= OnSizeChanged;
+        }
+
+
 
         private void Update()
         {
@@ -85,6 +103,14 @@ namespace Protoype.Alex
         }
 
         #endregion //Movement Functions
+
+        //Callbacks
+        //============================================================================================================//
+        
+        private void OnSizeChanged()
+        {
+            transform.TweenScaleTo(size.Value * startingScale, 0.5f, CURVE.EASE_OUT);
+        }
 
         //Shooting Functions
         //============================================================================================================//
