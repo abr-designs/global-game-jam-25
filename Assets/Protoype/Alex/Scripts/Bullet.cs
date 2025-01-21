@@ -1,9 +1,16 @@
 using UnityEngine;
+using Utilities.Debugging;
+using Utilities.Physics;
 
 namespace Protoype.Alex
 {
     public class Bullet : MonoBehaviour
     {
+        [SerializeField, Header("Collision Information")]
+        private Vector2 offset;
+        [SerializeField]
+        private float collisionRadius;
+        
         private float m_damage;
         private float m_speed;
         private Vector2 m_direction;
@@ -30,11 +37,43 @@ namespace Protoype.Alex
         //Bullet Detection Function
         //============================================================================================================//
 
+        //FIXME It might be cheaper to do this all in a controller, instead of per-projectile
         private bool DidHitTarget(string targetTag, out ActorBase actorBase)
         {
             actorBase = null;
+            var actors = GameController.Actors;
+            var pos = transform.TransformPoint(offset);
+
+            foreach (var actor in actors)
+            {
+                if(actor.targetTag.Equals(targetTag) == false)
+                    continue;
+                
+                if (CollisionChecks.CircleToCircle(
+                        actor.transform.position,
+                        actor.collisionRadius,
+                        pos,
+                        collisionRadius) == false)
+                {
+                    continue;
+                }
+
+                actorBase = actor;
+                
+                return true;
+            }
             return false;
         }
+
+#if UNITY_EDITOR
+
+        private void OnDrawGizmos()
+        {
+            var pos = transform.TransformPoint(offset);
+            Draw.Circle(pos, Color.yellow, collisionRadius);
+        }
+
+#endif
 
         //Creation Function
         //============================================================================================================//

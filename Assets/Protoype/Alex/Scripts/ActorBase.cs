@@ -51,6 +51,7 @@ namespace Protoype.Alex
                 return;
 
             Debug.Log($"<color=red>{gameObject.name} is dead!</color>", gameObject);
+            Destroy(gameObject);
         }
 
 #if UNITY_EDITOR

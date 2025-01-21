@@ -13,6 +13,7 @@ namespace Protoype.Alex
         private AnomalyProfile m_activeProfile;
 
         private SpriteRenderer m_spriteRenderer;
+        private ParticleSystem m_particleSystem;
 
         private List<ActorBase> m_overlappedActors;
 
@@ -23,6 +24,7 @@ namespace Protoype.Alex
         
         private void Start()
         {
+            m_particleSystem ??= GetComponentInChildren<ParticleSystem>();
             m_spriteRenderer ??= GetComponent<SpriteRenderer>();
             m_overlappedActors = new List<ActorBase>();
 
@@ -40,9 +42,13 @@ namespace Protoype.Alex
         public void Setup(AnomalyProfile anomalyProfile)
         {
             m_spriteRenderer ??= GetComponent<SpriteRenderer>();
+            m_particleSystem ??= GetComponentInChildren<ParticleSystem>();
             
             m_activeProfile = anomalyProfile;
             m_spriteRenderer.color = m_activeProfile.color;
+            
+            var main = m_particleSystem.main;
+            main.startColor = new ParticleSystem.MinMaxGradient(m_activeProfile.color);
         }
 
         private void CheckForCollisions()

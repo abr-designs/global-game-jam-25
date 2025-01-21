@@ -10,6 +10,8 @@ namespace Protoype.Alex
         public Affector[] affectors;
         public AnimationCurve growthCurve;
         
+        public Vector2[] shootDirections;
+        
         [Min(0.1f)]
         public float maxSize;
 

@@ -95,7 +95,7 @@ namespace Protoype.Alex
                 return;
 
             Cooldown = shootCooldown.Value;
-            Bullet.Create("Enemy", 
+            Bullet.Create(TagHelper.ENEMY, 
                 transform.up, 
                 bulletSpeed.Value, 
                 bulletSize.Value, 
