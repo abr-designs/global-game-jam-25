@@ -5,12 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Samples/Jam Starter Kit/0.0.4-6000/Main Menu UI/MainMenu.unity
     guid: b7d6230276c53b84d84ca33e843b75ba
   - enabled: 0
-    path: Assets/_Scenes/SampleScene.unity
+    path: Assets/Protoype/Alex/_Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Protoype/Alex-Side-Scroller/side-scroller-demo.unity
+    guid: a88a31e205bdf2043a1c462e92040cc7
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
