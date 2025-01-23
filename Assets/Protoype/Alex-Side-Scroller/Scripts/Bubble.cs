@@ -117,10 +117,10 @@ namespace Protoype.Alex_Side_Scroller
                     
                     m_currentState = STATE.CAPTURED;
                     break;
-                case PlayerController playerController when didMoveFarEnough:
-                    playerController.ExternalJump();
-                    Destroy(gameObject);
-                    break;
+                //case PlayerController playerController when didMoveFarEnough:
+                //    playerController.ExternalJump();
+                //    Destroy(gameObject);
+                //    break;
             }
 
         }
