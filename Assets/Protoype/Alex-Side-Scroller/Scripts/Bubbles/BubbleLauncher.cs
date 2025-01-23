@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Utilities.Tweening;
 
 namespace Protoype.Alex_Side_Scroller
@@ -10,12 +9,12 @@ namespace Protoype.Alex_Side_Scroller
         private Bubble bubblePrefab;
 
         [SerializeField, Min(0f)]
-        private float speed;
+        private float launchSpeed = 3f;
 
         [SerializeField]
         private Transform bubbleSpriteTransform;
-        [SerializeField]
-        private float chargeTime;
+        [HideInInspector]
+        public float chargeTime;
 
         private Vector3 m_startingScale;
 
@@ -46,8 +45,10 @@ namespace Protoype.Alex_Side_Scroller
         {
            var bubble = Instantiate(bubblePrefab, transform.position, Quaternion.identity);
            direction.y *= -1f;
-           bubble.Init(direction * speed);
-           
+           bubble.Init(direction * launchSpeed);
+
+           //Grow the bubble effect
+           //------------------------------------------------//
            bubbleSpriteTransform.localScale = Vector3.zero;
            bubbleSpriteTransform.TweenScaleTo(m_startingScale, chargeTime, CURVE.EASE_IN_OUT);
         }

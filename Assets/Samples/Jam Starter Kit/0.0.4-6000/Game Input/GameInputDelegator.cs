@@ -8,7 +8,7 @@ namespace GameInput
     {
         public static event Action<bool> InputLockChanged;
         public static event Action<Vector2> OnMovementChanged;
-        public static event Action OnGrabItemPressed;
+        public static event Action<bool> OnJumpPressed;
     
         public static event Action<bool> OnLeftClick;
         public static event Action<bool> OnRightClick;
@@ -82,14 +82,14 @@ namespace GameInput
             OnMovementChanged?.Invoke(_currentInput);
         }
 
-        public void OnGrabItem(InputAction.CallbackContext context)
+        public void OnJump(InputAction.CallbackContext context)
         {
             if (LockInputs) return;
             
-            if (context.ReadValueAsButton() == false)
-                return;
-        
-            OnGrabItemPressed?.Invoke();
+            if(!context.performed) return;
+            
+            var pressed = context.ReadValueAsButton();
+            OnJumpPressed?.Invoke(pressed);
         }
 
         public void OnMouseLeftClick(InputAction.CallbackContext context)

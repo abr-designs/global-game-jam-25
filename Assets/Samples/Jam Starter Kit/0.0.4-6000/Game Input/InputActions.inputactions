@@ -24,19 +24,19 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "GrabItem",
+                    "name": "Jump",
                     "type": "Button",
                     "id": "a65766b7-fa05-44b6-8d23-f21fac251c0b",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press(behavior=2)",
                     "initialStateCheck": false
                 },
                 {
                     "name": "Mouse Left Click",
                     "type": "Button",
                     "id": "426bd2d0-af89-422c-9959-a5d5d2ba189d",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "Press(behavior=2)",
                     "initialStateCheck": false
@@ -134,7 +134,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "GrabItem",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

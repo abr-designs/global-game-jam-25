@@ -48,19 +48,19 @@ namespace GameInput
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""GrabItem"",
+                    ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""a65766b7-fa05-44b6-8d23-f21fac251c0b"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Mouse Left Click"",
                     ""type"": ""Button"",
                     ""id"": ""426bd2d0-af89-422c-9959-a5d5d2ba189d"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=2)"",
                     ""initialStateCheck"": false
@@ -158,7 +158,7 @@ namespace GameInput
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""GrabItem"",
+                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -210,7 +210,7 @@ namespace GameInput
             m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
             m_Gameplay_HorizontalMovement = m_Gameplay.FindAction("HorizontalMovement", throwIfNotFound: true);
             m_Gameplay_VerticalMovement = m_Gameplay.FindAction("VerticalMovement", throwIfNotFound: true);
-            m_Gameplay_GrabItem = m_Gameplay.FindAction("GrabItem", throwIfNotFound: true);
+            m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
             m_Gameplay_MouseLeftClick = m_Gameplay.FindAction("Mouse Left Click", throwIfNotFound: true);
             m_Gameplay_MouseRightClick = m_Gameplay.FindAction("Mouse Right Click", throwIfNotFound: true);
             m_Gameplay_MouseLook = m_Gameplay.FindAction("MouseLook", throwIfNotFound: true);
@@ -285,7 +285,7 @@ namespace GameInput
         private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
         private readonly InputAction m_Gameplay_HorizontalMovement;
         private readonly InputAction m_Gameplay_VerticalMovement;
-        private readonly InputAction m_Gameplay_GrabItem;
+        private readonly InputAction m_Gameplay_Jump;
         private readonly InputAction m_Gameplay_MouseLeftClick;
         private readonly InputAction m_Gameplay_MouseRightClick;
         private readonly InputAction m_Gameplay_MouseLook;
@@ -295,7 +295,7 @@ namespace GameInput
             public GameplayActions(@InputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @HorizontalMovement => m_Wrapper.m_Gameplay_HorizontalMovement;
             public InputAction @VerticalMovement => m_Wrapper.m_Gameplay_VerticalMovement;
-            public InputAction @GrabItem => m_Wrapper.m_Gameplay_GrabItem;
+            public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
             public InputAction @MouseLeftClick => m_Wrapper.m_Gameplay_MouseLeftClick;
             public InputAction @MouseRightClick => m_Wrapper.m_Gameplay_MouseRightClick;
             public InputAction @MouseLook => m_Wrapper.m_Gameplay_MouseLook;
@@ -314,9 +314,9 @@ namespace GameInput
                 @VerticalMovement.started += instance.OnVerticalMovement;
                 @VerticalMovement.performed += instance.OnVerticalMovement;
                 @VerticalMovement.canceled += instance.OnVerticalMovement;
-                @GrabItem.started += instance.OnGrabItem;
-                @GrabItem.performed += instance.OnGrabItem;
-                @GrabItem.canceled += instance.OnGrabItem;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
                 @MouseLeftClick.started += instance.OnMouseLeftClick;
                 @MouseLeftClick.performed += instance.OnMouseLeftClick;
                 @MouseLeftClick.canceled += instance.OnMouseLeftClick;
@@ -336,9 +336,9 @@ namespace GameInput
                 @VerticalMovement.started -= instance.OnVerticalMovement;
                 @VerticalMovement.performed -= instance.OnVerticalMovement;
                 @VerticalMovement.canceled -= instance.OnVerticalMovement;
-                @GrabItem.started -= instance.OnGrabItem;
-                @GrabItem.performed -= instance.OnGrabItem;
-                @GrabItem.canceled -= instance.OnGrabItem;
+                @Jump.started -= instance.OnJump;
+                @Jump.performed -= instance.OnJump;
+                @Jump.canceled -= instance.OnJump;
                 @MouseLeftClick.started -= instance.OnMouseLeftClick;
                 @MouseLeftClick.performed -= instance.OnMouseLeftClick;
                 @MouseLeftClick.canceled -= instance.OnMouseLeftClick;
@@ -407,7 +407,7 @@ namespace GameInput
         {
             void OnHorizontalMovement(InputAction.CallbackContext context);
             void OnVerticalMovement(InputAction.CallbackContext context);
-            void OnGrabItem(InputAction.CallbackContext context);
+            void OnJump(InputAction.CallbackContext context);
             void OnMouseLeftClick(InputAction.CallbackContext context);
             void OnMouseRightClick(InputAction.CallbackContext context);
             void OnMouseLook(InputAction.CallbackContext context);

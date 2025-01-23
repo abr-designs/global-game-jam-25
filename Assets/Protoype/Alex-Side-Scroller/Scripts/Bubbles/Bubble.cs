@@ -59,7 +59,6 @@ namespace Protoype.Alex_Side_Scroller
 
         private void Start()
         {
-            m_worldStartPosition = transform.position;
             
             m_rigidbody2D = GetComponent<Rigidbody2D>();
             m_collider2D = GetComponent<Collider2D>();
@@ -90,6 +89,7 @@ namespace Protoype.Alex_Side_Scroller
             m_lifeTimer = lifeTime;
 
             currentState = STATE.IDLE;
+            m_worldStartPosition = (Vector2)transform.position;
         }
 
         private void ProcessMove()
@@ -108,7 +108,7 @@ namespace Protoype.Alex_Side_Scroller
 
         private void ProcessIdle()
         {
-            if (!m_didMoveFarEnough && (m_worldStartPosition - transform.position).magnitude > 1f)
+            if (!m_didMoveFarEnough && Vector2.Distance(m_worldStartPosition, transform.position) > 1f)
                 m_didMoveFarEnough = true;
 
             //Countdown time until Bubble dies
@@ -136,9 +136,8 @@ namespace Protoype.Alex_Side_Scroller
 
             switch (actor)
             {
-                case ICanBeCaptured canBeCaptured:
+                case ICanBeCaptured { IsCaptured: false } canBeCaptured:
                 {
-                    
                     var other = canBeCaptured.Capture();
                     //If the captured object returned null, we have to assume it has destroyed itself (Or intends to)
                     if (other == null)
