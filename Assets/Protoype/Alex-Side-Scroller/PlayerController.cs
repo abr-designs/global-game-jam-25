@@ -25,12 +25,14 @@ namespace Protoype.Alex_Side_Scroller
         [SerializeField, Min(0f)]private float jumpMaxHoldTime;
         private float m_jumpHoldTimer;
         [SerializeField, Min(1f)]private float downForceMult = 2f;
+        
    
         [Header("Inputs")]
         //------------------------------------------------//
         [SerializeField]private KeyCode moveLeftKeycode = KeyCode.A;
         [SerializeField]private KeyCode moveRightKeycode = KeyCode.D;
         [SerializeField]private KeyCode jumpKeycode = KeyCode.Space;
+        private bool isPressingJump;
 
         //TODO Determine if I even need W/S
         [SerializeField, ReadOnly]private int xInput;
@@ -87,7 +89,7 @@ namespace Protoype.Alex_Side_Scroller
                 newVelocity.x = m_currentMoveForce * moveSpeed * Time.fixedDeltaTime;
 
             //If we're falling, we want to increase gravity so things don't feel floaty
-            if (newVelocity.y < 0f)
+            if (newVelocity.y < 0f || !isPressingJump)
                 newVelocity += Physics2D.gravity * (downForceMult * Time.fixedDeltaTime);
         
 
@@ -100,7 +102,7 @@ namespace Protoype.Alex_Side_Scroller
             isGrounded = ProcessGrounded();
             hittingWall = ProcessHitWall();
             ProcessMove();
-            ProcessJump();
+            ProcessJumpV2();
         }
     
         //============================================================================================================//
@@ -190,7 +192,7 @@ namespace Protoype.Alex_Side_Scroller
             m_currentMoveForce = Mathf.SmoothDamp(m_currentMoveForce, xInput, ref m_moveSmoothDampVelocity, moveAcceleration);
         }
 
-        private void ProcessJump()
+        /*private void ProcessJump()
         {
             //Increase Timer
             if (Input.GetKey(jumpKeycode))
@@ -221,6 +223,34 @@ namespace Protoype.Alex_Side_Scroller
             if (jumpMult > 0.5f)
                 DidJump?.Invoke(new Vector2(xInput, 1f));
         
+        }*/
+        private void ProcessJumpV2()
+        {
+            isPressingJump = Input.GetKey(jumpKeycode);
+            
+            //Increase Timer
+            if (Input.GetKeyDown(jumpKeycode) == false)
+            {
+                m_jumpHoldTimer = Math.Clamp(m_jumpHoldTimer + Time.deltaTime, 0f, jumpMaxHoldTime);
+                return;
+            }
+            
+            //Check if there's a bubble available
+            if (m_jumpHoldTimer < jumpMaxHoldTime * 0.6f)
+                return;
+            
+            //If we jump while in the air, resetting YVelocity prevents fighting the current downforce
+            m_rigidbody2D.linearVelocityY = 0f;
+
+            var jumpMult = m_jumpHoldTimer / jumpMaxHoldTime;
+            //We want the jump force to be dependent on how long the player has been holding the jump button
+            m_rigidbody2D.AddForceY(jumpForce * jumpMult);
+
+            //To avoid spamming bubbles, only launch them if the button was held for at least 50% of the required time
+            if (jumpMult > 0.5f)
+                DidJump?.Invoke(new Vector2(xInput, 1f));
+
+            m_jumpHoldTimer = 0f;
         }
     
     }
