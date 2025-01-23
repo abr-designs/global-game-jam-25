@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3682909292045026888}
   - component: {fileID: 2865300380848120144}
   - component: {fileID: 4530693216853833451}
+  - component: {fileID: 3847971793357816269}
   - component: {fileID: 6601391933035385918}
   - component: {fileID: 8927100074696990913}
   - component: {fileID: 7483604145306986355}
@@ -53,7 +54,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 350
   moveAcceleration: 0.01
+  inAirMoveAcceleration: 0.2
   moveDeceleration: 0.1
+  jumpLimit: 0
+  m_currentJumpCount: 0
   jumpForce: 350
   jumpMaxHoldTime: 0.65
   downForceMult: 2.5
@@ -106,6 +110,19 @@ MonoBehaviour:
   ThrowCooldown: 0.1
   ThrowChargeSpeed: 0.5
   bubblePrefab: {fileID: 7704231998424687784, guid: d68cd8027558aaf4c956403487291ff7, type: 3}
+  captiveGatherController: {fileID: 3847971793357816269}
+--- !u!114 &3847971793357816269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5985185975824651602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bb034f84d194f5f9140a9c7ea694339, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &6601391933035385918
 SpriteRenderer:
   m_ObjectHideFlags: 0

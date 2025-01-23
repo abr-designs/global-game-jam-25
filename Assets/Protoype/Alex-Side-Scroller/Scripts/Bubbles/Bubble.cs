@@ -13,7 +13,8 @@ namespace Protoype.Alex_Side_Scroller
         {
             NONE,
             IDLE,
-            HOLDING_CAPTIVE
+            HOLDING_CAPTIVE,
+            THROWN
         }
         
         //============================================================================================================//
@@ -74,6 +75,9 @@ namespace Protoype.Alex_Side_Scroller
                     break;
                 case STATE.HOLDING_CAPTIVE:
                     ProcessHoldingCaptive();
+                    break;
+                case STATE.THROWN:
+                    ProcessThrown();
                     break;
                 case STATE.NONE:
                 default:
@@ -174,21 +178,21 @@ namespace Protoype.Alex_Side_Scroller
             if (overlapCircle == null)
                 return;
             
-            var actor = overlapCircle.GetComponent<ICanBeBubbled>();
+            var interactWithCaptive = overlapCircle.GetComponent<IInteractWithCaptive>();
 
-            switch (actor)
-            {
-                case ICanBeCaptured canBeCaptured:
-                {
-                    //TODO Maybe other things can pop the bubble?
-                    break;
-                }
-                case PlayerController playerController:
-                {
-                    //TODO When the player gets close enough to hold this object do so here
-                    break;
-                }
-            }
+            if (interactWithCaptive == null) 
+                return;
+            
+            interactWithCaptive.CarryCaptive(m_heldObject);
+
+            //Once picked up, we want to prepare to be thrown
+            currentState = STATE.THROWN;
+
+        }
+
+        private void ProcessThrown()
+        {
+            //TODO Do something to detect hits after being thrown
         }
 
         //Title

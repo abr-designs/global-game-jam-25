@@ -1,4 +1,5 @@
 using GameInput;
+using Protoype.Alex_Side_Scroller;
 using UnityEngine;
 
 public class Throwing : MonoBehaviour
@@ -39,6 +40,9 @@ public class Throwing : MonoBehaviour
 
     [SerializeField] private GameObject bubblePrefab;
 
+    [SerializeField]
+    private CaptiveGatherController captiveGatherController;
+
     private Camera m_mainCamera;
 
     //Unity Functions
@@ -59,6 +63,14 @@ public class Throwing : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (captiveGatherController.TotalCaptives == 0)
+        {
+            _throwIndicator.enabled = false;
+            return;
+        }
+        
+        _throwIndicator.enabled = true;
+        
 
         if (_throwingTimer > 0)
             _throwingTimer -= Time.deltaTime;
@@ -95,9 +107,7 @@ public class Throwing : MonoBehaviour
             if (_isLeftButtonDown && _throwingTimer <= 0)
             {
                 // Shoot projectile
-                var bubble = Instantiate(bubblePrefab);
-                bubble.transform.position = transform.position;
-                bubble.GetComponent<Rigidbody>().linearVelocity = _currentThrowVector * ThrowSpeed;
+                GenerateThrowable();
 
                 _throwingTimer = ThrowCooldown;
             }
@@ -115,9 +125,7 @@ public class Throwing : MonoBehaviour
             else if (!_isLeftButtonDown && _chargeStrength > 0)
             {
                 // Shoot projectile
-                var bubble = Instantiate(bubblePrefab);
-                bubble.transform.position = transform.position;
-                bubble.GetComponent<Rigidbody>().linearVelocity = _currentThrowVector * (ThrowSpeed * _chargeStrength);
+                GenerateThrowable();
 
                 _throwingTimer = ThrowCooldown;
                 _chargeStrength = 0;
@@ -129,6 +137,39 @@ public class Throwing : MonoBehaviour
     private void OnDisable()
     {
         GameInputDelegator.OnLeftClick -= OnClick;
+    }
+    //============================================================================================================//
+
+    //Original version
+    /*private Transform GenerateThrowable()
+    {
+        // Shoot projectile
+        var bubble = Instantiate(bubblePrefab);
+        bubble.transform.position = transform.position;
+        bubble.GetComponent<Rigidbody>().linearVelocity = _currentThrowVector * (ThrowSpeed * _chargeStrength);
+
+        return bubble.transform;
+    }*/
+    
+    private Transform GenerateThrowable()
+    {
+        // Shoot projectile
+        var bubble = captiveGatherController.RequestCaptive();
+        bubble.transform.gameObject.SetActive(true);
+        var rb = bubble.transform.GetComponent<Rigidbody2D>();
+        var c2d = bubble.transform.GetComponent<Collider2D>();
+
+        var thisCollider = GetComponent<Collider2D>();
+
+        Physics2D.IgnoreCollision(thisCollider, c2d);
+
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        c2d.enabled = true;
+        
+        bubble.transform.position = transform.position;
+        rb.linearVelocity = _currentThrowVector * ThrowSpeed;//* (ThrowSpeed * _chargeStrength);
+
+        return bubble.transform;
     }
 
     //Callbacks
