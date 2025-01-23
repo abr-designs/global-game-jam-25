@@ -1,8 +1,9 @@
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace Protoype.Alex_Side_Scroller
 {
-    public class Actor : MonoBehaviour, ICanBeCaptured, ICanInterface
+    public class Actor : MonoBehaviour, ICanBeCaptured, ICanBeReleased
     {
         enum STATE
         {
@@ -11,11 +12,19 @@ namespace Protoype.Alex_Side_Scroller
             MOVE,
             CAPTURED
         }
-    
+
+        //ICanBeCaptured Properties
+        //------------------------------------------------//
+        [field: SerializeField, ReadOnly]
         public bool IsCaptured { get; private set; }
+        public bool CanBeReleased => canBeReleased;
+        [SerializeField]
+        private bool canBeReleased;
         public float MaxIdleTime => maxIdleTime;
         [SerializeField]
         private float maxIdleTime;
+
+        //------------------------------------------------//
 
         private Rigidbody2D m_rigidbody2D;
         private Collider2D m_collider2D;
@@ -39,6 +48,11 @@ namespace Protoype.Alex_Side_Scroller
             m_rigidbody2D.gravityScale = 0.05f;
             
             return gameObject;
+        }
+
+        public void Release()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

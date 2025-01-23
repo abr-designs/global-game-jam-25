@@ -1,6 +1,6 @@
 ﻿namespace Protoype.Alex_Side_Scroller
 {
-    public interface ICanInterface
+    public interface ICanBeBubbled
     {
         
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Protoype.Alex_Side_Scroller
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public class PlayerController : MonoBehaviour, ICanInterface
+    public class PlayerController : ActorBase, ICanBeBubbled
     {
         public static event Action<Vector2> DidJump;
     
@@ -66,23 +66,12 @@ namespace Protoype.Alex_Side_Scroller
         };
         //------------------------------------------------//
 
-        private Rigidbody2D m_rigidbody2D;
-        private Collider2D m_collider2D;
-
-
         //Unity Functions
         //============================================================================================================//
-    
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        private void Start()
-        {
-            m_rigidbody2D = GetComponent<Rigidbody2D>();
-            m_collider2D = GetComponent<Collider2D>();
-        }
 
         private void FixedUpdate()
         {
-            var newVelocity = m_rigidbody2D.linearVelocity;
+            var newVelocity = Rigidbody2D.linearVelocity;
         
             //Prevents sticking to walls when in the air, and attempting to move left or Right
             if(hittingWall == false && isGrounded)
@@ -93,7 +82,7 @@ namespace Protoype.Alex_Side_Scroller
                 newVelocity += Physics2D.gravity * (downForceMult * Time.fixedDeltaTime);
         
 
-            m_rigidbody2D.linearVelocity = newVelocity;
+            Rigidbody2D.linearVelocity = newVelocity;
         }
 
         // Update is called once per frame
@@ -103,6 +92,14 @@ namespace Protoype.Alex_Side_Scroller
             hittingWall = ProcessHitWall();
             ProcessMove();
             ProcessJumpV2();
+        }
+
+        //Actor Base Overrides
+        //============================================================================================================//
+        
+        protected override void OnStart()
+        {
+            
         }
     
         //============================================================================================================//
@@ -114,10 +111,10 @@ namespace Protoype.Alex_Side_Scroller
             var didHit = false;
             for (var i = 0; i < CastXPositions.Length; i++)
             {
-                var origin = m_rigidbody2D.position + new Vector2(CastXPositions[i], castStartYPosition);
+                var origin = Rigidbody2D.position + new Vector2(CastXPositions[i], castStartYPosition);
                 var hit = Physics2D.Raycast(origin, Vector2.down, CAST_DISTANCE, levelMask.value);
 
-                if (hit && hit.collider != m_collider2D)
+                if (hit && hit.collider != Collider2D)
                 {
                     didHit = true;
                 }
@@ -140,10 +137,10 @@ namespace Protoype.Alex_Side_Scroller
             var didHit = false;
             for (var i = 0; i < CastXPositions.Length; i++)
             {
-                var origin = m_rigidbody2D.position + new Vector2(xStart, CastYPositions[i]);
+                var origin = Rigidbody2D.position + new Vector2(xStart, CastYPositions[i]);
                 var hit = Physics2D.Raycast(origin, dir, CAST_DISTANCE, levelMask.value);
 
-                if (hit && hit.collider != m_collider2D)
+                if (hit && hit.collider != Collider2D)
                 {
                     didHit = true;
                 }
@@ -240,17 +237,17 @@ namespace Protoype.Alex_Side_Scroller
                 return;
             
             //If we jump while in the air, resetting YVelocity prevents fighting the current downforce
-            m_rigidbody2D.linearVelocityY = 0f;
+            Rigidbody2D.linearVelocityY = 0f;
 
             var jumpMult = m_jumpHoldTimer / jumpMaxHoldTime;
             //We want the jump force to be dependent on how long the player has been holding the jump button
-            m_rigidbody2D.AddForceY(jumpForce * jumpMult);
+            Rigidbody2D.AddForceY(jumpForce * jumpMult);
 
             //To avoid spamming bubbles, only launch them if the button was held for at least 50% of the required time
             if (jumpMult > 0.5f && !isGrounded)
                 DidJump?.Invoke(new Vector2(-xInput, 1f));
             
-            m_rigidbody2D.linearVelocityX = m_currentMoveForce * moveSpeed * Time.fixedDeltaTime;
+            Rigidbody2D.linearVelocityX = m_currentMoveForce * moveSpeed * Time.fixedDeltaTime;
 
             m_jumpHoldTimer = 0f;
         }
@@ -258,11 +255,11 @@ namespace Protoype.Alex_Side_Scroller
         public void ExternalJump()
         {
             //If we jump while in the air, resetting YVelocity prevents fighting the current downforce
-            m_rigidbody2D.linearVelocityY = 0f;
+            Rigidbody2D.linearVelocityY = 0f;
 
             var jumpMult = m_jumpHoldTimer / jumpMaxHoldTime;
             //We want the jump force to be dependent on how long the player has been holding the jump button
-            m_rigidbody2D.AddForceY(jumpForce * jumpMult);
+            Rigidbody2D.AddForceY(jumpForce * jumpMult);
         }
     
     }
