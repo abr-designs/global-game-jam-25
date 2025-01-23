@@ -42,7 +42,10 @@ namespace Protoype.Alex_Side_Scroller
         private bool m_queueJump;
 
         //TODO Determine if I even need W/S
-        [SerializeField, ReadOnly]private int xInput;
+        [SerializeField, ReadOnly]
+        private int xInput;
+        //Used to store inputs to prevent wall sticks
+        private int m_lastXInput;
 
         [SerializeField]
         private LayerMask levelMask;
@@ -153,12 +156,14 @@ namespace Protoype.Alex_Side_Scroller
         private bool ProcessIsTouchingWall()
         {
             const float CAST_DISTANCE = 0.1f;
-
-            if (xInput == 0)
+            
+            //Continue checking if the player is not standing on the ground
+            //This prevents players from getting stuck on the wall
+            if (isGrounded && xInput == 0)
                 return false;
 
-            var xStart = xInput * castStartXPosition;
-            var dir = Vector2.right * xInput;
+            var xStart = m_lastXInput * castStartXPosition;
+            var dir = Vector2.right * m_lastXInput;
             var didHit = false;
             for (var i = 0; i < CastXPositions.Length; i++)
             {
@@ -292,7 +297,7 @@ namespace Protoype.Alex_Side_Scroller
                 if (isGrounded && xInput == 1)
                     m_currentMoveForce = 0f;
 
-                xInput = -1;
+                m_lastXInput = xInput = -1;
 
             }
             else if (movement.x > 0)
@@ -302,7 +307,7 @@ namespace Protoype.Alex_Side_Scroller
                 if (isGrounded && xInput == -1)
                     m_currentMoveForce = 0f;
 
-                xInput = 1;
+                m_lastXInput = xInput = 1;
             }
             else
             {
