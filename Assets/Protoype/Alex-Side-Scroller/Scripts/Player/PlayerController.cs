@@ -162,23 +162,35 @@ namespace Protoype.Alex_Side_Scroller
             if (isGrounded && xInput == 0)
                 return false;
 
-            var xStart = m_lastXInput * castStartXPosition;
-            var dir = Vector2.right * m_lastXInput;
-            var didHit = false;
-            for (var i = 0; i < CastXPositions.Length; i++)
-            {
-                var origin = Rigidbody2D.position + new Vector2(xStart, CastYPositions[i]);
-                var hit = Physics2D.Raycast(origin, dir, CAST_DISTANCE, levelMask.value);
+            //If we're flying in the air, check both sides, incase the player happened to have had changed directions
+            if (!isGrounded)
+                return CheckWall(-1) || CheckWall(1);
 
-                if (hit && hit.collider != Collider2D)
-                {
-                    didHit = true;
-                }
             
-                Debug.DrawRay(origin, dir * CAST_DISTANCE, didHit ? Color.green : Color.red);
-            }
+            return CheckWall(m_lastXInput);
 
-            return didHit;
+            //------------------------------------------------//
+            
+            bool CheckWall(int inputDirection)
+            {
+                var xStart = inputDirection * castStartXPosition;
+                var dir = Vector2.right * inputDirection;
+                var didHit = false;
+                for (var i = 0; i < CastXPositions.Length; i++)
+                {
+                    var origin = Rigidbody2D.position + new Vector2(xStart, CastYPositions[i]);
+                    var hit = Physics2D.Raycast(origin, dir, CAST_DISTANCE, levelMask.value);
+
+                    if (hit && hit.collider != Collider2D)
+                    {
+                        didHit = true;
+                    }
+            
+                    Debug.DrawRay(origin, dir * CAST_DISTANCE, didHit ? Color.green : Color.red);
+                }
+
+                return didHit;
+            }
         }
 
         private void ProcessMove()
