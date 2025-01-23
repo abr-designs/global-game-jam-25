@@ -248,7 +248,7 @@ namespace Protoype.Alex_Side_Scroller
 
             //To avoid spamming bubbles, only launch them if the button was held for at least 50% of the required time
             if (jumpMult > 0.5f && !isGrounded)
-                DidJump?.Invoke(new Vector2(xInput, 1f));
+                DidJump?.Invoke(new Vector2(-xInput, 1f));
             
             m_rigidbody2D.linearVelocityX = m_currentMoveForce * moveSpeed * Time.fixedDeltaTime;
 

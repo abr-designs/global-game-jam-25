@@ -41,8 +41,13 @@ namespace Protoype.Alex_Side_Scroller
 
         private STATE m_currentState;
 
+        private Vector3 m_worldStartPosition;
+        private bool didMoveFarEnough;
+
         private void Start()
         {
+            m_worldStartPosition = transform.position;
+            
             m_rigidbody2D = GetComponent<Rigidbody2D>();
             m_collider2D = GetComponent<Collider2D>();
             m_collider2D.enabled = false;
@@ -66,7 +71,9 @@ namespace Protoype.Alex_Side_Scroller
 
         private void ProcessIdle()
         {
-            m_playerJumpDelay -= Time.deltaTime;
+            if (!didMoveFarEnough && (m_worldStartPosition - transform.position).magnitude > 1f)
+                didMoveFarEnough = true;
+            //m_playerJumpDelay -= Time.deltaTime;
             
             if (m_lifeTimer <= 0f)
             {
@@ -110,7 +117,7 @@ namespace Protoype.Alex_Side_Scroller
                     
                     m_currentState = STATE.CAPTURED;
                     break;
-                case PlayerController playerController when m_playerJumpDelay < 0f:
+                case PlayerController playerController when didMoveFarEnough:
                     playerController.ExternalJump();
                     Destroy(gameObject);
                     break;
