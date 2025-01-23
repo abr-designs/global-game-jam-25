@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Protoype.Alex_Side_Scroller
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, ICanInterface
     {
         public static event Action<Vector2> DidJump;
     
@@ -85,7 +85,7 @@ namespace Protoype.Alex_Side_Scroller
             var newVelocity = m_rigidbody2D.linearVelocity;
         
             //Prevents sticking to walls when in the air, and attempting to move left or Right
-            if(hittingWall == false)
+            if(hittingWall == false && isGrounded)
                 newVelocity.x = m_currentMoveForce * moveSpeed * Time.fixedDeltaTime;
 
             //If we're falling, we want to increase gravity so things don't feel floaty
@@ -247,10 +247,22 @@ namespace Protoype.Alex_Side_Scroller
             m_rigidbody2D.AddForceY(jumpForce * jumpMult);
 
             //To avoid spamming bubbles, only launch them if the button was held for at least 50% of the required time
-            if (jumpMult > 0.5f)
+            if (jumpMult > 0.5f && !isGrounded)
                 DidJump?.Invoke(new Vector2(xInput, 1f));
+            
+            m_rigidbody2D.linearVelocityX = m_currentMoveForce * moveSpeed * Time.fixedDeltaTime;
 
             m_jumpHoldTimer = 0f;
+        }
+
+        public void ExternalJump()
+        {
+            //If we jump while in the air, resetting YVelocity prevents fighting the current downforce
+            m_rigidbody2D.linearVelocityY = 0f;
+
+            var jumpMult = m_jumpHoldTimer / jumpMaxHoldTime;
+            //We want the jump force to be dependent on how long the player has been holding the jump button
+            m_rigidbody2D.AddForceY(jumpForce * jumpMult);
         }
     
     }
