@@ -23,7 +23,7 @@ namespace Protoype.Alex_Side_Scroller
         
         private void OnEnable()
         {
-            PlayerController.DidJump += OnJumped;
+            // PlayerController.DidJump += OnJumped;
         }
 
         private void Start()
@@ -35,7 +35,7 @@ namespace Protoype.Alex_Side_Scroller
 
         private void OnDisable()
         {
-            PlayerController.DidJump -= OnJumped;
+            // PlayerController.DidJump -= OnJumped;
         }
         
         //Callbacks
