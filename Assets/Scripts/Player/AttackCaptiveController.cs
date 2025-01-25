@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GGJ.BubbleFall
 {
-    public class CaptiveGatherController : MonoBehaviour, IInteractWithCaptive
+    public class AttackCaptiveController : MonoBehaviour, IInteractWithCaptive
     {
         public int TotalCaptives { get; private set; }
 
@@ -11,8 +11,6 @@ namespace GGJ.BubbleFall
 
         public void CarryCaptive(ICanBeCaptured captive)
         {
-            Debug.Log("Carry captive");
-
             m_activeCaptives ??= new Stack<ICanBeCaptured>();
 
             //Prevent from holding it twice

@@ -52,12 +52,15 @@ namespace GGJ.BubbleFall
 
         public GameObject Capture()
         {
+            m_collider2D.enabled = false;
+            m_rigidbody2D.linearVelocity = Vector2.zero;
+
             switch (attribute)
             {
                 case ATTRIBUTE.NONE:
                     IsCaptured = true;
-                    m_rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-                    m_rigidbody2D.gravityScale = 9.8f;
+                    m_rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+                    m_rigidbody2D.linearVelocity = Vector2.up * 0.2f;
                     break;
                 case ATTRIBUTE.FIRE:
                     IsCaptured = true;

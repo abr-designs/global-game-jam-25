@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Audio;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -9,17 +10,21 @@ namespace UI
 {
     public class SettingsUI : BaseUIWindow
     {
-        [SerializeField, Header("Volume Settings")] 
+        [SerializeField, Header("Volume Settings")]
         private VolumeSettings masterVolume;
-        [SerializeField] 
+        [SerializeField]
         private VolumeSettings musicVolume;
-        [SerializeField] 
+        [SerializeField]
         private VolumeSettings sfxVolume;
 
-        private float MasterVolume => 0.75f;//TODO Get from a player pref or global location
-        private float MusicVolume => 1f;//TODO Get from a player pref or global location
-        private float SFXVolume => 1f;//TODO Get from a player pref or global location
-        
+        [SerializeField] Audio.AudioSettings audioSettings;
+
+        private float MasterVolume => audioSettings.MasterVolume;
+        private float MusicVolume => audioSettings.MusicVolume;
+        private float SFXVolume => audioSettings.SFXVolume;
+
+        [SerializeField] private AudioMixerGroup masterAudioMixer;
+
 
         //Unity Functions
         //============================================================================================================//
@@ -43,15 +48,19 @@ namespace UI
 
         private void OnMasterVolumeChanged(float value)
         {
-            Debug.LogError("MUST CONNECT MASTER VOLUME.\nChange no Saved...");
+            audioSettings.MasterVolume = value;
+            var v = Mathf.Log10(value) * 20;
+            masterAudioMixer.audioMixer.SetFloat("MasterVolume", v);
         }
         private void OnMusicVolumeChanged(float value)
         {
-            Debug.LogError("MUST MUSIC MASTER VOLUME.\nChange no Saved...");
+            audioSettings.MusicVolume = value;
+            Audio.Music.MusicController.Instance.SetVolume(value);
         }
         private void OnSFXVolumeChanged(float value)
         {
-            Debug.LogError("MUST SFX MASTER VOLUME.\nChange no Saved...");
+            audioSettings.SFXVolume = value;
+            Audio.SFXManager.Instance.SetVolume(value);
         }
 
         //Volume Settings Class
@@ -79,7 +88,7 @@ namespace UI
             public void Init(UnityAction<float> callback, float overrideValue = -1)
             {
                 Assert.IsNotNull(slider);
-                
+
                 slider.wholeNumbers = false;
                 slider.minValue = 0f;
                 slider.maxValue = 1f;
@@ -90,9 +99,13 @@ namespace UI
                     slider.onValueChanged.AddListener(FormatText);
 
                 var newValue = overrideValue >= 0f ? overrideValue : startingValue;
-                
+
                 slider.SetValueWithoutNotify(newValue);
                 FormatText(newValue);
+
+                // Callback on init just to sync values
+                callback(newValue);
+
             }
 
             public void DeInit()

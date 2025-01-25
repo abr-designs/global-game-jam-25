@@ -170,6 +170,7 @@ namespace GGJ.BubbleFall
             var actor = overlapCircle.GetComponent<ICanBeBubbled>();
 
 
+            // Look for player feet collision
             var player = overlapCircle.GetComponentInParent<PlayerMovementV2>();
             if (player)
             {
@@ -216,6 +217,7 @@ namespace GGJ.BubbleFall
 
             Draw.Circle(transform.position, Color.magenta, captiveRadius);
 
+            Debug.Log(overlapCircle);
             if (overlapCircle == null)
                 return;
 
