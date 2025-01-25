@@ -174,7 +174,7 @@ namespace GGJ.BubbleFall
             if (player)
             {
                 player.OnBubbleCollision(this, radius);
-                //return;
+                return;
             }
 
             switch (actor)
@@ -239,7 +239,7 @@ namespace GGJ.BubbleFall
         }
         private void ProcessDeployed()
         {
-            transform.Translate(new Vector3(0.0f, -0.1f, 0.0f));
+            // transform.Translate(new Vector3(0.0f, -0.1f, 0.0f));
             switch (currentAttribute)
             {
                 case ATTRIBUTE.EXPLOSIVE:
@@ -255,7 +255,7 @@ namespace GGJ.BubbleFall
 
                     break;
                 case ATTRIBUTE.FIRE:
-                    m_heldObject.transform.position += new Vector3(0.0f, 0.1f, 0.0f);
+                    //m_heldObject.transform.position += new Vector3(0.0f, 0.1f, 0.0f);
                     break;
             }
         }
