@@ -15,9 +15,9 @@ namespace GGJ.BubbleFall
         private Bubble bubblePrefab;
 
         // Input vars
-        private bool _shootPressed;
+        private bool _boostPressed;
         private bool _chargePressed;
-        private bool _lastFrameShootPressed;
+        private bool _lastFrameBoostPressed;
         private bool _lastFrameChargePressed;
 
         // Plane the character exists on -- use this for mouse cursor intersections
@@ -46,7 +46,7 @@ namespace GGJ.BubbleFall
         private void OnEnable()
         {
             GameInputDelegator.OnLeftClick += OnLeftClick;
-            GameInputDelegator.OnRightClick += OnRightClick;
+            GameInputDelegator.OnJumpPressed += OnJumpPressed;
         }
 
         private void Start()
@@ -59,7 +59,7 @@ namespace GGJ.BubbleFall
         private void OnDisable()
         {
             GameInputDelegator.OnLeftClick -= OnLeftClick;
-            GameInputDelegator.OnRightClick -= OnRightClick;
+            GameInputDelegator.OnJumpPressed -= OnJumpPressed;
         }
 
         private void Update()
@@ -69,13 +69,13 @@ namespace GGJ.BubbleFall
             _throwCooldownTimer -= Time.deltaTime;
             _boostCooldownTimer -= Time.deltaTime;
 
-            var shootPressedThisFrame = !_lastFrameShootPressed && _shootPressed;
+            var boostPressedThisFrame = !_lastFrameBoostPressed && _boostPressed;
             var chargePressedThisFrame = !_lastFrameChargePressed && _chargePressed;
 
             if (_boostCooldownTimer <= 0f)
             {
-                // left click is boost bubble
-                if (shootPressedThisFrame)
+                // jump is boost bubble
+                if (boostPressedThisFrame && !_playerMovement.IsGrounded)
                 {
                     DoBubbleBoost();
                 }
@@ -85,7 +85,7 @@ namespace GGJ.BubbleFall
             if (_throwCooldownTimer <= 0f)
             {
 
-                // right click is charge throw
+                // left click is charge throw
                 if (chargePressedThisFrame)
                 {
                     _chargeTimer = 0f;
@@ -95,12 +95,12 @@ namespace GGJ.BubbleFall
                 if (_lastFrameChargePressed && !_chargePressed)
                 {
                     var strength = Mathf.Clamp01(_chargeTimer / throwCooldown);
-                    DoBubbleThrow(_chargeTimer / throwCooldown);
+                    DoBubbleThrow(strength);
                 }
 
             }
 
-            _lastFrameShootPressed = _shootPressed;
+            _lastFrameBoostPressed = _boostPressed;
             _lastFrameChargePressed = _chargePressed;
         }
 
@@ -124,7 +124,7 @@ namespace GGJ.BubbleFall
             LaunchBubble(Vector2.down * 0.1f, position);
             // Apply force backwards to launcher
             // _playerMovement.AddExternalVel(Vector2.up * boostVelocity);
-            _throwCooldownTimer = throwCooldown;
+            _boostCooldownTimer = boostCooldown;
         }
 
         private void DoBubbleThrow(float strength)
@@ -152,11 +152,11 @@ namespace GGJ.BubbleFall
 
         private void OnLeftClick(bool pressed)
         {
-            _shootPressed = pressed;
-        }
-        private void OnRightClick(bool pressed)
-        {
             _chargePressed = pressed;
+        }
+        private void OnJumpPressed(bool pressed)
+        {
+            _boostPressed = pressed;
         }
 
     }

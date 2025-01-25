@@ -37,6 +37,7 @@ namespace GGJ.BubbleFall
 
 
         private bool _isGrounded;
+        public bool IsGrounded => _isGrounded;
         private bool _bumpedHead;
 
         // jump vars
