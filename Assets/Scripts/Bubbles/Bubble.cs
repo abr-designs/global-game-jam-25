@@ -193,18 +193,18 @@ namespace GGJ.BubbleFall
                         m_heldObject = canBeCaptured;
 
                         transform.position = other.transform.position;
-                        transform.SetParent(other.transform, true);
+                        other.transform.SetParent(transform, true);
 
                         currentState = STATE.HOLDING_CAPTIVE;
 
                         break;
                     }
-                case PlayerController playerController when m_didMoveFarEnough:
-                    {
-                        playerController.ExternalJump();
-                        Destroy(gameObject);
-                        break;
-                    }
+                    // case PlayerController playerController when m_didMoveFarEnough:
+                    //     {
+                    //         playerController.ExternalJump();
+                    //         Destroy(gameObject);
+                    //         break;
+                    //     }
             }
 
 
@@ -228,6 +228,8 @@ namespace GGJ.BubbleFall
 
             //Once picked up, we want to prepare to be thrown
             currentState = STATE.THROWN;
+
+            transform.position += new Vector3(0.0f, 1.0f, 0.0f);
 
         }
 
