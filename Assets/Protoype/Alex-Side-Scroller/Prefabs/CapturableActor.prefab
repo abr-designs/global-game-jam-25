@@ -50,6 +50,7 @@ MonoBehaviour:
   <IsCaptured>k__BackingField: 0
   canBeReleased: 0
   maxIdleTime: 5
+  attribute: 2
 --- !u!212 &213518035843536415
 SpriteRenderer:
   m_ObjectHideFlags: 0

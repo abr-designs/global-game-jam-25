@@ -12,7 +12,15 @@ namespace Protoype.Alex_Side_Scroller
             MOVE,
             CAPTURED
         }
+        public enum ATTRIBUTE
+        {
+            NONE,
+            FROZEN,
+            EXPLOSIVE,
+            FIRE,
+            STATIC
 
+        }
         //ICanBeCaptured Properties
         //------------------------------------------------//
         [field: SerializeField, ReadOnly]
@@ -24,6 +32,7 @@ namespace Protoype.Alex_Side_Scroller
         [SerializeField]
         private float maxIdleTime;
 
+        public ATTRIBUTE attribute;
         //------------------------------------------------//
 
         private Rigidbody2D m_rigidbody2D;
@@ -31,7 +40,7 @@ namespace Protoype.Alex_Side_Scroller
 
         //Unity Functions
         //============================================================================================================//
-    
+
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Start()
         {
@@ -46,7 +55,7 @@ namespace Protoype.Alex_Side_Scroller
             IsCaptured = true;
             m_rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
             m_rigidbody2D.gravityScale = 0.05f;
-            
+
             return gameObject;
         }
 

@@ -47,7 +47,7 @@ public class Throwing : MonoBehaviour
 
     //Unity Functions
     //============================================================================================================//
-
+    //registering an event listener
     private void OnEnable()
     {
         GameInputDelegator.OnLeftClick += OnClick;
@@ -68,9 +68,9 @@ public class Throwing : MonoBehaviour
             _throwIndicator.enabled = false;
             return;
         }
-        
+
         _throwIndicator.enabled = true;
-        
+
 
         if (_throwingTimer > 0)
             _throwingTimer -= Time.deltaTime;
@@ -150,7 +150,7 @@ public class Throwing : MonoBehaviour
 
         return bubble.transform;
     }*/
-    
+
     private Transform GenerateThrowable()
     {
         // Shoot projectile
@@ -165,7 +165,7 @@ public class Throwing : MonoBehaviour
 
         rb.bodyType = RigidbodyType2D.Dynamic;
         c2d.enabled = true;
-        
+
         bubble.transform.position = transform.position;
         rb.linearVelocity = _currentThrowVector * ThrowSpeed;//* (ThrowSpeed * _chargeStrength);
 

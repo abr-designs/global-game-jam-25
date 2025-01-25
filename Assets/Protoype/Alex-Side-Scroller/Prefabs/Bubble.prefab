@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
+  currentAttribute: 0
   holdingObject: 0
   decelerationMultiplier: 2
   lifeTime: 1
@@ -56,6 +57,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   captiveRadius: 0.75
+  explosionRadius: 1.41
+  explodeLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!212 &2267223549904369370
 SpriteRenderer:
   m_ObjectHideFlags: 0
