@@ -70,13 +70,13 @@ namespace GGJ.BubbleFall
             // throw system is ready for another deploy
             if (_throwCooldownTimer <= 0f)
             {
-                // left click without right click is bubble boost (deploy + force)
-                if (shootPressedThisFrame && !_chargePressed)
+                // left click is boost bubble
+                if (shootPressedThisFrame)
                 {
                     DoBubbleBoost();
                 }
-                // left click while holding right click is a charged throw
-                else if (shootPressedThisFrame && _chargePressed)
+                // right click is charge throw
+                else if (chargePressedThisFrame && _chargePressed)
                 {
                     DoBubbleThrow();
                 }

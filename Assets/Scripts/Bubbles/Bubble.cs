@@ -106,6 +106,8 @@ namespace GGJ.BubbleFall
             //Slow down the Bubble
             m_velocity -= m_velocity * (Time.deltaTime * decelerationMultiplier);
 
+            m_velocity += Physics2D.gravity * Time.deltaTime;
+
             transform.position = newPosition;
         }
 
