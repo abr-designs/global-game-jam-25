@@ -107,11 +107,7 @@ namespace GGJ.BubbleFall
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            if (Input.GetKeyDown(KeyCode.A))
 
-            {
-                Debug.Log(currentAttribute);
-            }
         }
 
         //============================================================================================================//
@@ -217,7 +213,6 @@ namespace GGJ.BubbleFall
 
             Draw.Circle(transform.position, Color.magenta, captiveRadius);
 
-            Debug.Log(overlapCircle);
             if (overlapCircle == null)
                 return;
 

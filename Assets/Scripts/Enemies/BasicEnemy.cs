@@ -71,9 +71,9 @@ public class BasicEnemy : MonoBehaviour
         // Only move left/right if we are grounded
         if (_isGrounded)
         {
-            if (_leftWallHit)
+            if (_leftWallHit || !_leftGrounded)
                 _moveDir = 1;
-            else if (_rightWallHit)
+            else if (_rightWallHit || !_rightGrounded)
                 _moveDir = -1;
             else if (_rb.linearVelocityX == 0f)
             {
@@ -101,7 +101,7 @@ public class BasicEnemy : MonoBehaviour
         _leftGrounded = Physics2D.Raycast(leftSide, Vector2.down, _coll.bounds.extents.y + colliderExtent, groundLayerMask);
         _rightGrounded = Physics2D.Raycast(rightSide, Vector2.down, _coll.bounds.extents.y + colliderExtent, groundLayerMask);
 
-        _isGrounded = _leftGrounded && _rightGrounded;
+        _isGrounded = _leftGrounded || _rightGrounded;
 
         // check walls
         var boxCastSize = new Vector2(colliderExtent, _coll.bounds.size.y * 0.8f);
@@ -115,7 +115,7 @@ public class BasicEnemy : MonoBehaviour
     private void OnDrawGizmos()
     {
         var vel = _rb == null ? Vector2.zero : _rb.linearVelocity;
-        Draw.Label(transform.position, $"Grounded: {_isGrounded} \n Velocity: {vel} \n MoveDir: {_moveDir}");
+        Draw.Label(transform.position, $"Grounded: {_isGrounded} \n Velocity: {vel} \n MoveDir: {_moveDir} \n LeftGround: {_leftGrounded} RightGround: {_rightGrounded}");
 
     }
 
