@@ -1,4 +1,5 @@
-﻿using GameInput;
+﻿using System;
+using GameInput;
 using UnityEngine;
 using Utilities.Tweening;
 
@@ -24,9 +25,12 @@ namespace GGJ.BubbleFall
         private Camera m_mainCamera;
 
         [SerializeField] private float throwCooldown = 0.1f;
+        [SerializeField] private float boostCooldown = 0.1f;
         private float _throwCooldownTimer = 0f;
+        private float _boostCooldownTimer = 0f;
 
         [SerializeField] private float maxChargeTime = 2f;
+        [SerializeField] private float minChargeVel = 2f;
         [SerializeField] private float maxChargeVel = 10f;
         private float _chargeTimer = 0f;
 
@@ -61,24 +65,37 @@ namespace GGJ.BubbleFall
         private void Update()
         {
             // update timers
-            _chargeTimer -= Time.deltaTime;
+            _chargeTimer += Time.deltaTime;
             _throwCooldownTimer -= Time.deltaTime;
+            _boostCooldownTimer -= Time.deltaTime;
 
             var shootPressedThisFrame = !_lastFrameShootPressed && _shootPressed;
             var chargePressedThisFrame = !_lastFrameChargePressed && _chargePressed;
 
-            // throw system is ready for another deploy
-            if (_throwCooldownTimer <= 0f)
+            if (_boostCooldownTimer <= 0f)
             {
                 // left click is boost bubble
                 if (shootPressedThisFrame)
                 {
                     DoBubbleBoost();
                 }
+            }
+
+            // throw system is ready for another deploy
+            if (_throwCooldownTimer <= 0f)
+            {
+
                 // right click is charge throw
-                else if (chargePressedThisFrame && _chargePressed)
+                if (chargePressedThisFrame)
                 {
-                    DoBubbleThrow();
+                    _chargeTimer = 0f;
+                }
+
+                // charge was released this frame
+                if (_lastFrameChargePressed && !_chargePressed)
+                {
+                    var strength = Mathf.Clamp01(_chargeTimer / throwCooldown);
+                    DoBubbleThrow(_chargeTimer / throwCooldown);
                 }
 
             }
@@ -110,14 +127,17 @@ namespace GGJ.BubbleFall
             _throwCooldownTimer = throwCooldown;
         }
 
-        private void DoBubbleThrow()
+        private void DoBubbleThrow(float strength)
         {
+
+            var vel = (maxChargeVel - minChargeVel) * strength + minChargeVel;
+
             Debug.Log("Bubble throw");
             // TODO -- adjust charge velocity here
             // for now we always throw at max force
             var dir = GetMouseDirection();
             var position = _playerMovement.bubbleThrowLocation;
-            LaunchBubble(dir * maxChargeVel, position);
+            LaunchBubble(dir * vel, position);
             _throwCooldownTimer = throwCooldown;
         }
 
