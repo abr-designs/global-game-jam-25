@@ -55,6 +55,7 @@ namespace GGJ.BubbleFall
             switch (attribute)
             {
                 case ATTRIBUTE.EXPLOSIVE:
+                case ATTRIBUTE.NONE:
                     IsCaptured = true;
                     m_rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
                     m_rigidbody2D.gravityScale = 9.8f;
