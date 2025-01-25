@@ -35,7 +35,7 @@ namespace GGJ.BubbleFall
         private STATE currentState = STATE.NONE;
 
         [SerializeField, ReadOnly]
-        private ATTRIBUTE currentAttribute = ATTRIBUTE.NONE;
+        private ATTRIBUTE currentAttribute = ATTRIBUTE.EXPLOSIVE;
 
         [SerializeField, ReadOnly]
         private bool holdingObject;
@@ -243,6 +243,13 @@ namespace GGJ.BubbleFall
             switch (currentAttribute)
             {
                 case ATTRIBUTE.EXPLOSIVE:
+                    var overlapCircle = Physics2D.OverlapCircle(transform.position, radius, actorLayerMask.value);
+
+
+
+                    if (overlapCircle == null)
+                        return;
+                    Debug.Log("I hit a thing");
                     var exploded = Physics2D.OverlapCircle(transform.position, explosionRadius, explodeLayerMask.value);
                     if (exploded == null)
                     {
