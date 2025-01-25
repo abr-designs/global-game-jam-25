@@ -346,6 +346,7 @@ namespace GGJ.BubbleFall
                 _isJumping = true;
             }
             _jumpBufferTimer = 0f;
+            _moveVelocity.x = _moveVelocity.x * MoveStats.JumpHorizontalDampening;
             VerticalVelocity = MoveStats.JumpVelocity; //MoveStats.InitialJumpVelocity;
         }
 
