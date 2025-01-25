@@ -107,11 +107,7 @@ namespace GGJ.BubbleFall
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            if (Input.GetKeyDown(KeyCode.A))
 
-            {
-                Debug.Log(currentAttribute);
-            }
         }
 
         //============================================================================================================//
@@ -170,6 +166,7 @@ namespace GGJ.BubbleFall
             var actor = overlapCircle.GetComponent<ICanBeBubbled>();
 
 
+            // Look for player feet collision
             var player = overlapCircle.GetComponentInParent<PlayerMovementV2>();
             if (player)
             {
