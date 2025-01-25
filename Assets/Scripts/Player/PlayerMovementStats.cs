@@ -27,6 +27,8 @@ namespace GGJ.BubbleFall
         public float JumpVelocity = 20f;
         // public float JumpHeight = 6.5f;
         // public float TimeTillJumpApex = 0.35f;
+        [Range(0f, 1f)] public float JumpHorizontalDampening = .5f;
+
         [Range(0.01f, 20f)] public float FallGravityMultiplier = 2f;
         public float MaxFallSpeed = 26f;
 
