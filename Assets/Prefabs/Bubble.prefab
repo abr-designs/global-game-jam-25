@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
+  currentAttribute: 0
   holdingObject: 0
   decelerationMultiplier: 0.5
   lifeTime: 4
@@ -143,6 +144,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   captiveRadius: 1.25
+  explosionRadius: 0
+  explodeLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!58 &9025965153029331523
 CircleCollider2D:
   m_ObjectHideFlags: 0

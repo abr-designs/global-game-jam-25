@@ -193,7 +193,7 @@ namespace GGJ.BubbleFall
                         m_heldObject = canBeCaptured;
 
                         transform.position = other.transform.position;
-                        other.transform.SetParent(transform, true);
+                        transform.SetParent(other.transform, true);
 
                         currentState = STATE.HOLDING_CAPTIVE;
 
@@ -229,7 +229,7 @@ namespace GGJ.BubbleFall
             //Once picked up, we want to prepare to be thrown
             currentState = STATE.THROWN;
 
-            transform.position += new Vector3(0.0f, 1.0f, 0.0f);
+            //  transform.position += new Vector3(0.0f, 1.0f, 0.0f);
 
         }
 

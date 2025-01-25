@@ -52,13 +52,25 @@ namespace GGJ.BubbleFall
 
         public GameObject Capture()
         {
-            IsCaptured = true;
-            m_rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-            m_rigidbody2D.gravityScale = 0.05f;
+            switch (attribute)
+            {
+                case ATTRIBUTE.EXPLOSIVE:
+                    IsCaptured = true;
+                    m_rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+                    m_rigidbody2D.gravityScale = 9.8f;
+                    break;
+                case ATTRIBUTE.FIRE:
+                    IsCaptured = true;
+                    m_rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+                    m_rigidbody2D.freezeRotation = true;
+                    m_rigidbody2D.gravityScale = -0.01f;
+                    m_rigidbody2D.linearDamping = 0.1f;
+                    break;
 
+
+            }
             return gameObject;
         }
-
         public void Release()
         {
             throw new System.NotImplementedException();
