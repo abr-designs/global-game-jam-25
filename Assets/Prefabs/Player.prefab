@@ -359,8 +359,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bubblePrefab: {fileID: 7847610627110216592, guid: d68cd8027558aaf4c956403487291ff7, type: 3}
   throwCooldown: 0.5
+  boostCooldown: 0.4
   maxChargeTime: 2
-  maxChargeVel: 10
+  minChargeVel: 1.2
+  maxChargeVel: 15
   boostVelocity: 2
   boostGap: 0.5
 --- !u!1 &6610348001981706920
