@@ -174,7 +174,7 @@ namespace GGJ.BubbleFall
             if (player)
             {
                 player.OnBubbleCollision(this, radius);
-                return;
+                //return;
             }
 
             switch (actor)

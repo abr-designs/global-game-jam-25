@@ -8,7 +8,7 @@ namespace GGJ.BubbleFall
     // Based on the controller from Sasquatch Studios
     // https://www.youtube.com/watch?v=zHSWG05byEc
 
-    public class PlayerMovementV2 : MonoBehaviour
+    public class PlayerMovementV2 : ActorBase, ICanBeBubbled
     {
 
         [Header("References")]
@@ -78,7 +78,7 @@ namespace GGJ.BubbleFall
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        protected override void OnStart()
         {
 
         }
