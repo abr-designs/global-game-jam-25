@@ -1,3 +1,4 @@
+using System;
 using GameInput;
 using UnityEngine;
 using Utilities.Debugging;
@@ -64,6 +65,16 @@ namespace GGJ.BubbleFall
         public Vector2 bubbleDropLocation => new Vector2(_feetColl.bounds.center.x, _feetColl.bounds.min.y);
         public Vector2 bubbleThrowLocation => new Vector2(_bodyColl.bounds.center.x, _bodyColl.bounds.max.y);
 
+
+        // keeping track of spawn position
+
+        public GameObject LastSpawnLocation;
+
+
+        // animation vars
+        [SerializeField] private ParticleSystem dustParticleSystem;
+        [SerializeField] GameObject playerModel;
+
         private void OnEnable()
         {
             GameInputDelegator.OnMovementChanged += OnMovementChanged;
@@ -91,6 +102,8 @@ namespace GGJ.BubbleFall
 
             _lastFrameInput = _moveInput;
             _lastFrameJumpPressed = _isJumpPressed;
+
+            DoAnimations();
 
         }
 
@@ -430,6 +443,35 @@ namespace GGJ.BubbleFall
                 // Debug.Log($"Player/Bubble collision! -- {playerIsAbove}");
             }
         }
+
+        #region Effects/Animations
+
+        private void DoAnimations()
+        {
+            if (Mathf.Abs(_moveInput.x) > 0 && _isGrounded)
+            {
+                var emission = dustParticleSystem.emission;
+                emission.enabled = true;
+
+            }
+            else
+            {
+                var emission = dustParticleSystem.emission;
+                emission.enabled = false;
+            }
+
+            if (_moveInput.x > 0)
+            {
+                playerModel.transform.forward = Vector3.right;
+            }
+            else if (_moveInput.x < 0)
+            {
+                playerModel.transform.forward = Vector3.left;
+            }
+
+        }
+
+        #endregion
 
 #if UNITY_EDITOR
 
