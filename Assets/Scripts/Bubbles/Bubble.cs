@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -74,15 +76,17 @@ namespace GGJ.BubbleFall
 
         //For Interactions with Player
         //------------------------------------------------//
-        [SerializeField]
-        private Collider2D playerCollider;
+        private Collider2D[] _playerColliders;
         private bool m_didMoveFarEnough;
 
         private float m_minDistanceFromPlayer;
         public Vector3 m_worldStartPosition;
 
 
-        private int countdown = 200;
+        // How long until the player can collide with the deployed bubble
+        [SerializeField] private float captiveBubbleCooldown = 0.5f;
+        private float _captiveBubbleTimer;
+
         //Unity Functions
         //============================================================================================================//
 
@@ -92,6 +96,8 @@ namespace GGJ.BubbleFall
             m_rigidbody2D = GetComponent<Rigidbody2D>();
             m_collider2D = GetComponent<Collider2D>();
             m_collider2D.enabled = false;
+
+            _playerColliders = FindAnyObjectByType<PlayerMovementV2>().GetComponents<Collider2D>();
         }
 
         private void Update()
@@ -216,7 +222,7 @@ namespace GGJ.BubbleFall
 
         private void ProcessHoldingCaptive()
         {
-            countdown = 200;
+            _captiveBubbleTimer = captiveBubbleCooldown;
             m_didMoveFarEnough = false;
 
             var overlapCircle = Physics2D.OverlapCircle(transform.position, captiveRadius, actorLayerMask.value);
@@ -233,6 +239,9 @@ namespace GGJ.BubbleFall
 
             interactWithCaptive.CarryCaptive(m_heldObject);
 
+            // Give our bubble a lifetime
+            m_lifeTimer = lifeTime;
+
             //Once picked up, we want to prepare to be thrown
             currentState = STATE.THROWN;
 
@@ -244,10 +253,9 @@ namespace GGJ.BubbleFall
         private void ProcessDeployed()
         {
 
-            if (countdown > 0)
+            if (_captiveBubbleTimer >= 0)
             {
-                countdown--;
-
+                captiveBubbleCooldown -= Time.deltaTime;
             }
 
             // m_heldObject.transform.gameObject.GetComponentInCh<BoxCollider2D>().enabled = true;
@@ -257,41 +265,33 @@ namespace GGJ.BubbleFall
             {
                 m_didMoveFarEnough = true;
             }
-            //if (overlapCircle == null)
 
-            // if (overlapCircle != null)
-            // {
-            //     //var actor = overlapCircle.GetComponent<ICanBeBubbled>();
+            //Countdown time until Bubble dies
+            //------------------------------------------------//
+            if (m_lifeTimer <= 0f)
+            {
+                Destroy(gameObject);
+                return;
+            }
 
-
-            //     // Look for player feet collision
-            //     var player = overlapCircle.GetComponentInParent<PlayerMovementV2>();
-            //     if (!player)
-            //     {
-
-            //     }
-            //     //if (Vector3.Distance(player.transform.position, transform.position) > 2)
-
-            // }
+            m_lifeTimer -= Time.deltaTime;
 
             // transform.Translate(new Vector3(0.0f, -0.1f, 0.0f));
             switch (currentAttribute)
             {
                 case ATTRIBUTE.NONE:
 
-                    if (countdown > 0)
+                    if (_captiveBubbleTimer > 0)
                     {
-
-
                         //IsCaptured = true;
                         m_rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-                        m_rigidbody2D.linearVelocity = Vector3.zero;
+                        //m_rigidbody2D.linearVelocity = Vector3.zero;
                         m_rigidbody2D.gravityScale = 1f;
                         // Standard movement
                         //ProcessMove();
+                        m_velocity = m_rigidbody2D.linearVelocity;
                         m_velocity -= m_velocity * (Time.deltaTime * decelerationMultiplier);
-
-                        m_velocity += Vector2.down * Time.deltaTime;
+                        m_velocity += Physics2D.gravity * Time.deltaTime;
 
                         m_rigidbody2D.linearVelocity = m_velocity;
                     }
@@ -321,6 +321,23 @@ namespace GGJ.BubbleFall
                     // TODO -- do fire placement here
             }
         }
+
+
+        public IEnumerator IgnoreCollisionCoroutine(float duration)
+        {
+            foreach (var col in _playerColliders)
+            {
+                Physics2D.IgnoreCollision(externalCollider2D, col, true);
+            }
+            yield return new WaitForSeconds(duration);
+            foreach (var col in _playerColliders)
+            {
+                Physics2D.IgnoreCollision(externalCollider2D, col, false);
+            }
+
+        }
+
+
         //Title
         //============================================================================================================//
 

@@ -11,14 +11,18 @@ namespace GGJ.BubbleFall
         public float KnockVelocity = 20f;
 
         private Collider2D _collider;
+        private Actor _actor;
 
         void Start()
         {
+            _actor = GetComponent<Actor>();
             _collider = GetComponent<Collider2D>();
         }
 
         void OnCollisionStay2D(Collision2D collision)
         {
+            if (_actor && _actor.IsCaptured) return;
+
             var player = collision.collider.GetComponent<PlayerHealth>();
             if (player)
             {

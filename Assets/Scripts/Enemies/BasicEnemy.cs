@@ -26,6 +26,8 @@ public class BasicEnemy : MonoBehaviour
     private RaycastHit2D _rightGrounded;
     private RaycastHit2D _rightWallHit;
 
+    [SerializeField] private Transform _enemyModel;
+
 
     // Move vars
 
@@ -85,6 +87,8 @@ public class BasicEnemy : MonoBehaviour
         {
             _rb.linearVelocityX = 0f;
         }
+
+        _enemyModel.forward = Vector3.right * _moveDir;
 
     }
 

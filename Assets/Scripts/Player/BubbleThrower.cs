@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GameInput;
 using UnityEngine;
 
@@ -158,7 +159,7 @@ namespace GGJ.BubbleFall
             }
             else
             {
-                ThrowCaptive(dir * vel, position);
+                ThrowCaptive(dir * vel, position + Vector2.up * .3f);
 
             }
             _throwCooldownTimer = throwCooldown;
@@ -170,16 +171,22 @@ namespace GGJ.BubbleFall
             var captive = _captiveGather.RequestCaptive();
             var bubble = captive.bubble;
             bubble.gameObject.SetActive(true);
-            bubble.m_worldStartPosition = transform.position;
-            var rb = bubble.transform.GetComponent<Rigidbody2D>();
-            // var c2d = bubble.transform.GetComponent<Collider2D>();
-            // var thisCollider = GetComponent<Collider2D>();
-            // Physics2D.IgnoreCollision(thisCollider, c2d);
 
-            // rb.bodyType = RigidbodyType2D.Dynamic;
-            // c2d.enabled = true;
+            // Ignore collisions with this player collider
+            StartCoroutine(bubble.IgnoreCollisionCoroutine(0.5f));
+
+
+            var rb = bubble.transform.GetComponent<Rigidbody2D>();
 
             bubble.transform.position = position;
+            bubble.m_worldStartPosition = position;
+
+            // Minimum speed (to prevent getting stuck in player)
+            if (Mathf.Abs(velocity.x) < (maxChargeVel / 2f))
+            {
+                velocity.x = Mathf.Sign(velocity.x) * maxChargeVel / 2f;
+            }
+
             rb.linearVelocity = velocity;
 
             return bubble.transform;

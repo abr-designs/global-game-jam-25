@@ -1,7 +1,10 @@
 using System;
 using Audio.Music;
+using GameInput;
 using Levels;
+using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GGJ.BubbleFall
 {
@@ -21,6 +24,8 @@ namespace GGJ.BubbleFall
         // Reference to player controller
         [SerializeField]
         private PlayerMovementV2 playerController;
+
+        private CinemachineCamera _vCamera;
 
         private void OnEnable()
         {
@@ -48,6 +53,9 @@ namespace GGJ.BubbleFall
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
+            var brain = Camera.main.GetComponent<CinemachineBrain>();
+            _vCamera = (CinemachineCamera)brain.ActiveVirtualCamera;
+
 
 
         }
@@ -84,7 +92,7 @@ namespace GGJ.BubbleFall
             else
             {
                 // GAME FULLY DONE
-                // TODO -- End credits scene
+                SceneManager.LoadScene(2);
             }
 
         }
@@ -101,6 +109,7 @@ namespace GGJ.BubbleFall
         // Spawn at last spawn location (unless it's first time in level)
         private void InitPlayer(bool isStartSpawn = false)
         {
+            GameInputDelegator.SetInputLock(true);
             if (isStartSpawn)
             {
                 var currentLevel = (PlatformLevel)LevelLoader.CurrentLevelDataDefinition;
@@ -113,6 +122,11 @@ namespace GGJ.BubbleFall
             playerController.GetComponent<CaptiveGatherController>().ResetCaptives();
             playerController.GetComponent<BubbleThrower>().Reset();
             playerController.gameObject.SetActive(true);
+            GameInputDelegator.SetInputLock(false);
+
+            // Move camera
+            _vCamera.ForceCameraPosition(transform.position, Quaternion.identity);
+
         }
     }
 

@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using GameInput;
 using UnityEngine;
 
 namespace GGJ.BubbleFall
@@ -19,6 +21,13 @@ namespace GGJ.BubbleFall
 
         public bool IsAlive => CurrentHealth > 0;
 
+        private Animator _playerAnim;
+
+        void Start()
+        {
+            _playerAnim = GetComponentInChildren<Animator>();
+        }
+
         public void ResetHealth()
         {
             CurrentHealth = MaxHealth;
@@ -33,6 +42,13 @@ namespace GGJ.BubbleFall
 
             CurrentHealth = Math.Max(CurrentHealth - damage, 0);
             _damageTimer = damageTimerWindow;
+
+            // If the player took positive damage we handle effects
+            if (damage > 0)
+            {
+                StartCoroutine(TakeHitCoroutine());
+            }
+
             OnPlayerHealthChange?.Invoke(CurrentHealth, MaxHealth);
 
             if (CurrentHealth <= 0)
@@ -56,6 +72,15 @@ namespace GGJ.BubbleFall
             {
                 ReceiveDamage(MaxHealth);
             }
+        }
+
+        private IEnumerator TakeHitCoroutine()
+        {
+            GameInputDelegator.SetInputLock(true);
+            _playerAnim.Play("Hit");
+            // TODO -- VFX here
+            yield return new WaitForSeconds(damageTimerWindow / 2f);
+            GameInputDelegator.SetInputLock(false);
         }
 
     }

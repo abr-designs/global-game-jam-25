@@ -63,7 +63,7 @@ namespace GGJ.BubbleFall
         private Vector2 _externalVel = Vector2.zero;
 
         public Vector2 bubbleDropLocation => new Vector2(_feetColl.bounds.center.x, _feetColl.bounds.min.y);
-        public Vector2 bubbleThrowLocation => new Vector2(_bodyColl.bounds.center.x, _bodyColl.bounds.max.y);
+        public Vector2 bubbleThrowLocation => new Vector2(_bodyColl.bounds.center.x, _bodyColl.bounds.center.y);
 
 
         // keeping track of spawn position
@@ -488,7 +488,6 @@ namespace GGJ.BubbleFall
 
             if (isWalking)
             {
-                Debug.Log("Trigger walk anim");
                 anim.SetBool("walking", true);
                 if (!animatorIsWalking)
                     anim.Play("Walking");

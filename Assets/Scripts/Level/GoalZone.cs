@@ -34,6 +34,7 @@ namespace GGJ.BubbleFall
             {
                 _isHit = true;
                 // invoke event
+                Debug.Log("GoalHit");
                 GoalHit?.Invoke();
             }
         }
