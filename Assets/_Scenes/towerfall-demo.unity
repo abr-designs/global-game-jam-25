@@ -593,6 +593,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5657065505847765356, guid: 0b4336372429bbe4f9064dffda0bf328, type: 3}
   m_PrefabInstance: {fileID: 397801607}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &466987565 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2955805508170038515, guid: 6ea9c8f580421914daa2eeeada231518, type: 3}
+  m_PrefabInstance: {fileID: 2802402810565337445}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &720554223
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1871,6 +1876,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8392678295223680329, guid: 6ea9c8f580421914daa2eeeada231518, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8392678295223680329, guid: 6ea9c8f580421914daa2eeeada231518, type: 3}
+      propertyPath: captiveGatherController
+      value: 
+      objectReference: {fileID: 6254818397742110505}
     - target: {fileID: 9000972927506260289, guid: 6ea9c8f580421914daa2eeeada231518, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.12
@@ -1914,7 +1927,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2955805508170038515, guid: 6ea9c8f580421914daa2eeeada231518, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6254818397742110511}
   m_SourcePrefab: {fileID: 100100000, guid: 6ea9c8f580421914daa2eeeada231518, type: 3}
 --- !u!1001 &6040649245563674403
 PrefabInstance:
@@ -1978,6 +1994,40 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9000972927506260289, guid: 6ea9c8f580421914daa2eeeada231518, type: 3}
   m_PrefabInstance: {fileID: 2802402810565337445}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6254818397742110505 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6160304279585396119, guid: 6ea9c8f580421914daa2eeeada231518, type: 3}
+  m_PrefabInstance: {fileID: 2802402810565337445}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 466987565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bb034f84d194f5f9140a9c7ea694339, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6254818397742110511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 466987565}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54400ddebb12d814793eb2d40c3d71a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ThrowType: 0
+  lineRendererPrefab: {fileID: 0}
+  reticle: {fileID: 0}
+  LinePoints: 20
+  LineTimeStep: 0.1
+  ThrowSpeed: 1
+  BubbleGravity: -9.8
+  ThrowCooldown: 0.1
+  ThrowChargeSpeed: 0.5
+  bubblePrefab: {fileID: 2678506703089896037, guid: d68cd8027558aaf4c956403487291ff7, type: 3}
+  captiveGatherController: {fileID: 6254818397742110505}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
