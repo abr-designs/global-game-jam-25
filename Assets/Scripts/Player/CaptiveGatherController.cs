@@ -20,7 +20,7 @@ namespace GGJ.BubbleFall
                 return;
 
             m_activeCaptives.Push(captive);
-            captive.transform.gameObject.SetActive(false);
+            //captive.transform.gameObject.SetActive(false);
 
             TotalCaptives = m_activeCaptives.Count;
         }

@@ -29,10 +29,15 @@ namespace GGJ.BubbleFall
         [SerializeField]
         private bool canBeReleased;
         public float MaxIdleTime => maxIdleTime;
+
+        private Bubble _bubble;
+        Bubble ICanBeCaptured.bubble => _bubble;
+
         [SerializeField]
         private float maxIdleTime;
 
         public ATTRIBUTE attribute;
+
         //------------------------------------------------//
 
         private Rigidbody2D m_rigidbody2D;
@@ -50,28 +55,32 @@ namespace GGJ.BubbleFall
 
         //============================================================================================================//
 
-        public GameObject Capture()
+        public GameObject Capture(Bubble bubble)
         {
+            _bubble = bubble;
+
+            // Disable physics on actor
             m_collider2D.enabled = false;
-            m_rigidbody2D.linearVelocity = Vector2.zero;
+            m_rigidbody2D.simulated = false;
 
-            switch (attribute)
-            {
-                case ATTRIBUTE.NONE:
-                    IsCaptured = true;
-                    m_rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
-                    m_rigidbody2D.linearVelocity = Vector2.up * 0.2f;
-                    break;
-                case ATTRIBUTE.FIRE:
-                    IsCaptured = true;
-                    m_rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
-                    m_rigidbody2D.freezeRotation = true;
-                    m_rigidbody2D.gravityScale = -0.01f;
-                    m_rigidbody2D.linearDamping = 0.1f;
-                    break;
+            // Do any custom attribute processing here
 
+            // switch (attribute)
+            // {
+            //     case ATTRIBUTE.NONE:
+            //         IsCaptured = true;
+            //         m_rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+            //         // m_rigidbody2D.linearVelocity = Vector2.zero;
+            //         break;
+            //     case ATTRIBUTE.FIRE:
+            //         IsCaptured = true;
+            //         m_rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+            //         // m_rigidbody2D.freezeRotation = true;
+            //         // m_rigidbody2D.gravityScale = -0.01f;
+            //         // m_rigidbody2D.linearDamping = 0.1f;
+            //         break;
+            // }
 
-            }
             return gameObject;
         }
         public void Release()

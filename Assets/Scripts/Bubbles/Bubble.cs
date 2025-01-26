@@ -178,7 +178,7 @@ namespace GGJ.BubbleFall
             {
                 case ICanBeCaptured { IsCaptured: false } canBeCaptured:
                     {
-                        var other = canBeCaptured.Capture();
+                        var other = canBeCaptured.Capture(this);
                         //If the captured object returned null, we have to assume it has destroyed itself (Or intends to)
                         if (other == null)
                         {
@@ -189,8 +189,10 @@ namespace GGJ.BubbleFall
                         holdingObject = true;
                         m_heldObject = canBeCaptured;
 
+                        // Put actor in bubble
                         transform.position = other.transform.position;
-                        transform.SetParent(other.transform, true);
+                        other.transform.SetParent(transform, true);
+                        //transform.SetParent(other.transform, true);
 
                         currentState = STATE.HOLDING_CAPTIVE;
 
@@ -226,23 +228,22 @@ namespace GGJ.BubbleFall
             //Once picked up, we want to prepare to be thrown
             currentState = STATE.THROWN;
 
-            //  transform.position += new Vector3(0.0f, 1.0f, 0.0f);
+            // Disable button (hide from view)
+            transform.gameObject.SetActive(false);
 
         }
 
-        private void ProcessThrown()
-        {
-            //TODO Do something to detect hits after being thrown
-        }
         private void ProcessDeployed()
         {
+
             // transform.Translate(new Vector3(0.0f, -0.1f, 0.0f));
             switch (currentAttribute)
             {
-                case ATTRIBUTE.EXPLOSIVE:
+                case ATTRIBUTE.NONE:
                     var overlapCircle = Physics2D.OverlapCircle(transform.position, radius, actorLayerMask.value);
 
-
+                    // Standard movement
+                    ProcessMove();
 
                     if (overlapCircle == null)
                         return;
@@ -259,7 +260,8 @@ namespace GGJ.BubbleFall
 
                     break;
                 case ATTRIBUTE.FIRE:
-                    //m_heldObject.transform.position += new Vector3(0.0f, 0.1f, 0.0f);
+                    //m_heldObject.transform.position += new Vector3(0.0f, 0.1f, 0.0f);u
+                    // TODO -- do fire placement here
                     break;
             }
         }

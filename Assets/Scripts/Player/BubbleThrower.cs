@@ -39,6 +39,7 @@ namespace GGJ.BubbleFall
 
         private PlayerMovementV2 _playerMovement;
         private Rigidbody2D _throwerRb;
+        private CaptiveGatherController _captiveGather;
 
         //Unity Functions
         //============================================================================================================//
@@ -54,6 +55,7 @@ namespace GGJ.BubbleFall
             m_mainCamera = Camera.main;
             _playerMovement = GetComponent<PlayerMovementV2>();
             _throwerRb = GetComponent<Rigidbody2D>();
+            _captiveGather = GetComponent<CaptiveGatherController>();
         }
 
         private void OnDisable()
@@ -137,8 +139,38 @@ namespace GGJ.BubbleFall
             // for now we always throw at max force
             var dir = GetMouseDirection();
             var position = _playerMovement.bubbleThrowLocation;
-            LaunchBubble(dir * vel, position);
+
+            if (_captiveGather.TotalCaptives == 0)
+            {
+                LaunchBubble(dir * vel, position);
+            }
+            else
+            {
+                ThrowCaptive(dir * vel, position);
+
+            }
             _throwCooldownTimer = throwCooldown;
+        }
+
+        private Transform ThrowCaptive(Vector2 velocity, Vector2 position)
+        {
+            // Shoot projectile
+            var captive = _captiveGather.RequestCaptive();
+            var bubble = captive.bubble;
+            bubble.gameObject.SetActive(true);
+
+            var rb = bubble.transform.GetComponent<Rigidbody2D>();
+            // var c2d = bubble.transform.GetComponent<Collider2D>();
+            // var thisCollider = GetComponent<Collider2D>();
+            // Physics2D.IgnoreCollision(thisCollider, c2d);
+
+            // rb.bodyType = RigidbodyType2D.Dynamic;
+            // c2d.enabled = true;
+
+            bubble.transform.position = position;
+            rb.linearVelocity = velocity;
+
+            return bubble.transform;
         }
 
         private void LaunchBubble(Vector2 velocity, Vector2 position)

@@ -7,7 +7,9 @@ namespace GGJ.BubbleFall
         Transform transform { get; }
         bool IsCaptured { get; }
 
-        GameObject Capture();
+        Bubble bubble { get; }
+
+        GameObject Capture(Bubble bubble);
     }
 
 
