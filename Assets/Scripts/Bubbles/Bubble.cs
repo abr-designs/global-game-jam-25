@@ -66,8 +66,8 @@ namespace GGJ.BubbleFall
         /// </summary>
         private Rigidbody2D m_rigidbody2D;
         private Collider2D m_collider2D;
-        [SerializeField]
-        private Rigidbody2D externalRigidbody2D;
+        // [SerializeField]
+        // private Rigidbody2D externalRigidbody2D;
         [SerializeField]
         private Collider2D externalCollider2D;
         //Movement Speed
@@ -75,12 +75,15 @@ namespace GGJ.BubbleFall
 
         //For Interactions with Player
         //------------------------------------------------//
-
+        [SerializeField]
+        private Collider2D playerCollider;
         private bool m_didMoveFarEnough;
 
         private float m_minDistanceFromPlayer;
-        private Vector3 m_worldStartPosition;
+        public Vector3 m_worldStartPosition;
 
+
+        private int countdown = 200;
         //Unity Functions
         //============================================================================================================//
 
@@ -214,6 +217,9 @@ namespace GGJ.BubbleFall
 
         private void ProcessHoldingCaptive()
         {
+            countdown = 200;
+            m_didMoveFarEnough = false;
+
             var overlapCircle = Physics2D.OverlapCircle(transform.position, captiveRadius, actorLayerMask.value);
 
             Draw.Circle(transform.position, Color.magenta, captiveRadius);
@@ -239,16 +245,59 @@ namespace GGJ.BubbleFall
         private void ProcessDeployed()
         {
 
+            if (countdown > 0)
+            {
+                countdown--;
+
+            }
+
+            // m_heldObject.transform.gameObject.GetComponentInCh<BoxCollider2D>().enabled = true;
+            var overlapCircle = Physics2D.OverlapCircle(transform.position, radius, actorLayerMask.value);
+            externalCollider2D.gameObject.SetActive(true);
+            if (!m_didMoveFarEnough && Vector2.Distance(m_worldStartPosition, transform.position) > 2f)
+            {
+                m_didMoveFarEnough = true;
+            }
+            //if (overlapCircle == null)
+
+            // if (overlapCircle != null)
+            // {
+            //     //var actor = overlapCircle.GetComponent<ICanBeBubbled>();
+
+
+            //     // Look for player feet collision
+            //     var player = overlapCircle.GetComponentInParent<PlayerMovementV2>();
+            //     if (!player)
+            //     {
+
+            //     }
+            //     //if (Vector3.Distance(player.transform.position, transform.position) > 2)
+
+            // }
+
             // transform.Translate(new Vector3(0.0f, -0.1f, 0.0f));
             switch (currentAttribute)
             {
                 case ATTRIBUTE.NONE:
-                    var overlapCircle = Physics2D.OverlapCircle(transform.position, radius, actorLayerMask.value);
 
-                    // Standard movement
-                    ProcessMove();
+                    if (countdown > 0)
+                    {
 
-                    if (overlapCircle == null)
+
+                        //IsCaptured = true;
+                        m_rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+                        m_rigidbody2D.linearVelocity = Vector3.zero;
+                        m_rigidbody2D.gravityScale = 1f;
+                        // Standard movement
+                        //ProcessMove();
+                        m_velocity -= m_velocity * (Time.deltaTime * decelerationMultiplier);
+
+                        m_velocity += Vector2.down * Time.deltaTime;
+
+                        m_rigidbody2D.linearVelocity = m_velocity;
+                    }
+                    var overlapCircle2 = Physics2D.OverlapCircle(transform.position, radius, actorLayerMask.value);
+                    if (overlapCircle2 == null)
                         return;
                     Debug.Log("I hit a thing");
                     var exploded = Physics2D.OverlapCircle(transform.position, explosionRadius, explodeLayerMask.value);
@@ -260,12 +309,17 @@ namespace GGJ.BubbleFall
                     Debug.Log(exploded);
 
                     Destroy(exploded.gameObject);
-
+                    Destroy(gameObject);
                     break;
                 case ATTRIBUTE.FIRE:
+                    //m_rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+                    m_rigidbody2D.linearVelocity = Vector3.zero;
+                    m_rigidbody2D.freezeRotation = true;
+                    m_rigidbody2D.gravityScale = -0.01f;
+                    m_rigidbody2D.linearDamping = 0.1f;
+                    break;
                     //m_heldObject.transform.position += new Vector3(0.0f, 0.1f, 0.0f);u
                     // TODO -- do fire placement here
-                    break;
             }
         }
         //Title

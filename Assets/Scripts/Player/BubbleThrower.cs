@@ -43,7 +43,7 @@ namespace GGJ.BubbleFall
         private PlayerMovementV2 _playerMovement;
         private Rigidbody2D _throwerRb;
         private CaptiveGatherController _captiveGather;
-
+        private Animator anim;
         // Track active bubbles (destroy on reset)
         private List<Bubble> _bubbleList = new List<Bubble>();
 
@@ -62,6 +62,7 @@ namespace GGJ.BubbleFall
             _playerMovement = GetComponent<PlayerMovementV2>();
             _throwerRb = GetComponent<Rigidbody2D>();
             _captiveGather = GetComponent<CaptiveGatherController>();
+            anim = GetComponent<Animator>();
         }
 
         private void OnDisable()
@@ -150,7 +151,7 @@ namespace GGJ.BubbleFall
             // for now we always throw at max force
             var dir = GetMouseDirection();
             var position = _playerMovement.bubbleThrowLocation;
-
+            anim.SetBool("casting", true);
             if (_captiveGather.TotalCaptives == 0)
             {
                 LaunchBubble(dir * vel, position);
@@ -169,7 +170,7 @@ namespace GGJ.BubbleFall
             var captive = _captiveGather.RequestCaptive();
             var bubble = captive.bubble;
             bubble.gameObject.SetActive(true);
-
+            bubble.m_worldStartPosition = transform.position;
             var rb = bubble.transform.GetComponent<Rigidbody2D>();
             // var c2d = bubble.transform.GetComponent<Collider2D>();
             // var thisCollider = GetComponent<Collider2D>();

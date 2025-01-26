@@ -10,8 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 101728639374498634}
   - component: {fileID: 7012536080837625987}
-  - component: {fileID: 188592254329906519}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,33 +78,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2.044511, y: 2.0381517}
   m_EdgeRadius: 0
---- !u!50 &188592254329906519
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 745193980957043308}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: -1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
 --- !u!1 &1856999293489311357
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,10 +223,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   captiveRadius: 1.25
-  explosionRadius: 0
+  explosionRadius: 5
   explodeLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
+  externalCollider2D: {fileID: 7012536080837625987}
+  playerCollider: {fileID: 4911681052619522296, guid: 6ea9c8f580421914daa2eeeada231518, type: 3}
+  m_worldStartPosition: {x: 0, y: 0, z: 0}
 --- !u!58 &9025965153029331523
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -303,7 +278,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.0001
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0.125

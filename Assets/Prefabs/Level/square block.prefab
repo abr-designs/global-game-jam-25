@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5729124403217181637}
   - component: {fileID: 4371062789760497763}
   m_Layer: 6
-  m_Name: block-overhang
+  m_Name: square block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -42,7 +42,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6472383708913088651}
-  m_Mesh: {fileID: 653233643768468572, guid: 0c1e00c5549d6f346b03ffcd518f672d, type: 3}
+  m_Mesh: {fileID: -4763815025208093965, guid: 3c8426809289eb6419afbdc93e78e0be, type: 3}
 --- !u!23 &2741788025873088325
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6538903991835684241, guid: 0c1e00c5549d6f346b03ffcd518f672d, type: 3}
+  - {fileID: 2100000, guid: 5274928d9cf3b41438a8899591353935, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

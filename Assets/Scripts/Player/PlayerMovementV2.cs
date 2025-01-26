@@ -73,6 +73,7 @@ namespace GGJ.BubbleFall
 
         // animation vars
         [SerializeField] private ParticleSystem dustParticleSystem;
+        private Animator anim;
         [SerializeField] GameObject playerModel;
 
         private void OnEnable()
@@ -86,6 +87,7 @@ namespace GGJ.BubbleFall
         {
             _isFacingRight = true;
             _rb = GetComponent<Rigidbody2D>();
+            anim = GetComponent<Animator>();
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -356,7 +358,9 @@ namespace GGJ.BubbleFall
         {
             if (!_isJumping)
             {
+                anim.SetBool("jumping", true);
                 _isJumping = true;
+
             }
             _jumpBufferTimer = 0f;
             _moveVelocity.x = _moveVelocity.x * MoveStats.JumpHorizontalDampening;
@@ -380,7 +384,11 @@ namespace GGJ.BubbleFall
                 VerticalVelocity += _externalVel.y;
                 _externalVel = new Vector2(_externalVel.x, 0f);
             }
-
+            if (VerticalVelocity < 0f)
+            {
+                anim.SetBool("jumping", false);
+                anim.SetBool("falling", true);
+            }
             // If we are falling we apply fall modifier
             // if (VerticalVelocity < 0f)
             // {
@@ -450,12 +458,15 @@ namespace GGJ.BubbleFall
         {
             if (Mathf.Abs(_moveInput.x) > 0 && _isGrounded)
             {
+                anim.SetBool("walking", true);
+
                 var emission = dustParticleSystem.emission;
                 emission.enabled = true;
 
             }
             else
             {
+                anim.SetBool("walking", false);
                 var emission = dustParticleSystem.emission;
                 emission.enabled = false;
             }
