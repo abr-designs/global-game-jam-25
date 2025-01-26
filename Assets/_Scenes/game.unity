@@ -724,6 +724,10 @@ PrefabInstance:
       propertyPath: 'levels.Array.data[1]'
       value: 
       objectReference: {fileID: 1771417680403398905, guid: 7fddf7d40a499724ab0ea7b4ba39495a, type: 3}
+    - target: {fileID: 4290186900691878009, guid: 4a4225d5719735d40a2cf078b72b7062, type: 3}
+      propertyPath: 'levels.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1771417680403398905, guid: 7fddf7d40a499724ab0ea7b4ba39495a, type: 3}
     - target: {fileID: 5092420766775760579, guid: 4a4225d5719735d40a2cf078b72b7062, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

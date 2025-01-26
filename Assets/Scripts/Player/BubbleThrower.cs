@@ -39,8 +39,8 @@ namespace GGJ.BubbleFall
 
         private PlayerMovementV2 _playerMovement;
         private Rigidbody2D _throwerRb;
-        [SerializeField]
-        private CaptiveGatherController captiveGatherController;
+        private CaptiveGatherController _captiveGather;
+
         //Unity Functions
         //============================================================================================================//
 
@@ -55,6 +55,7 @@ namespace GGJ.BubbleFall
             m_mainCamera = Camera.main;
             _playerMovement = GetComponent<PlayerMovementV2>();
             _throwerRb = GetComponent<Rigidbody2D>();
+            _captiveGather = GetComponent<CaptiveGatherController>();
         }
 
         private void OnDisable()
@@ -122,8 +123,7 @@ namespace GGJ.BubbleFall
         private void DoBubbleBoost()
         {
             var position = _playerMovement.bubbleDropLocation + Vector2.down * boostGap;
-            var bubble = Instantiate(bubblePrefab, position, Quaternion.identity);
-            LaunchBubble(Vector2.down * 0.1f, position, bubble);
+            LaunchBubble(Vector2.down * 0.1f, position);
             // Apply force backwards to launcher
             // _playerMovement.AddExternalVel(Vector2.up * boostVelocity);
             _boostCooldownTimer = boostCooldown;
@@ -139,26 +139,43 @@ namespace GGJ.BubbleFall
             // for now we always throw at max force
             var dir = GetMouseDirection();
             var position = _playerMovement.bubbleThrowLocation;
-            if (captiveGatherController.TotalCaptives == 0)
+
+            if (_captiveGather.TotalCaptives == 0)
             {
-                var bubble = Instantiate(bubblePrefab, position, Quaternion.identity);
-                LaunchBubble(dir * vel, position, bubble);
+                LaunchBubble(dir * vel, position);
             }
             else
             {
-                var bubble = captiveGatherController.RequestCaptive();
-
-                LaunchBubble(dir * vel, position, bubble.transform.GetComponent<Bubble>());
+                ThrowCaptive(dir * vel, position);
 
             }
-
             _throwCooldownTimer = throwCooldown;
         }
 
-        private void LaunchBubble(Vector2 velocity, Vector2 position, Bubble bubble)
+        private Transform ThrowCaptive(Vector2 velocity, Vector2 position)
         {
-            // var bubble = captiveGatherController.RequestCaptive();
+            // Shoot projectile
+            var captive = _captiveGather.RequestCaptive();
+            var bubble = captive.bubble;
+            bubble.gameObject.SetActive(true);
 
+            var rb = bubble.transform.GetComponent<Rigidbody2D>();
+            // var c2d = bubble.transform.GetComponent<Collider2D>();
+            // var thisCollider = GetComponent<Collider2D>();
+            // Physics2D.IgnoreCollision(thisCollider, c2d);
+
+            // rb.bodyType = RigidbodyType2D.Dynamic;
+            // c2d.enabled = true;
+
+            bubble.transform.position = position;
+            rb.linearVelocity = velocity;
+
+            return bubble.transform;
+        }
+
+        private void LaunchBubble(Vector2 velocity, Vector2 position)
+        {
+            var bubble = Instantiate(bubblePrefab, position, Quaternion.identity);
             bubble.Init(velocity);
         }
 

@@ -6,10 +6,15 @@ namespace GGJ.BubbleFall
     {
         public bool IsCaptured => false;
 
+
+        public Bubble bubble => _bubble;
+        private Bubble _bubble;
+
         //============================================================================================================//
 
-        public GameObject Capture()
+        public GameObject Capture(Bubble bubble)
         {
+            _bubble = bubble;
             Destroy(gameObject);
 
             return null;
