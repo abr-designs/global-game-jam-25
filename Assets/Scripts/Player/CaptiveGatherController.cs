@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 namespace GGJ.BubbleFall
@@ -31,6 +32,16 @@ namespace GGJ.BubbleFall
             TotalCaptives = m_activeCaptives.Count;
 
             return captive;
+        }
+
+        // Called on death/new level
+        public void ResetCaptives()
+        {
+            while (TotalCaptives > 0)
+            {
+                var captive = RequestCaptive();
+                Destroy(captive.transform.gameObject);
+            }
         }
     }
 }

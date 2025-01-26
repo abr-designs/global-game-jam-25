@@ -1,7 +1,7 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
 using GameInput;
 using UnityEngine;
-using Utilities.Tweening;
 
 namespace GGJ.BubbleFall
 {
@@ -26,6 +26,9 @@ namespace GGJ.BubbleFall
 
         [SerializeField] private float throwCooldown = 0.1f;
         [SerializeField] private float boostCooldown = 0.1f;
+        [SerializeField] private int maxBoostCount = 2;
+        private int _boostAvailable;
+
         private float _throwCooldownTimer = 0f;
         private float _boostCooldownTimer = 0f;
 
@@ -40,6 +43,9 @@ namespace GGJ.BubbleFall
         private PlayerMovementV2 _playerMovement;
         private Rigidbody2D _throwerRb;
         private CaptiveGatherController _captiveGather;
+
+        // Track active bubbles (destroy on reset)
+        private List<Bubble> _bubbleList = new List<Bubble>();
 
         //Unity Functions
         //============================================================================================================//
@@ -74,10 +80,14 @@ namespace GGJ.BubbleFall
             var boostPressedThisFrame = !_lastFrameBoostPressed && _boostPressed;
             var chargePressedThisFrame = !_lastFrameChargePressed && _chargePressed;
 
+            // Reset boost count on touching ground
+            if (_playerMovement.IsGrounded)
+                _boostAvailable = maxBoostCount;
+
             if (_boostCooldownTimer <= 0f)
             {
                 // jump is boost bubble
-                if (boostPressedThisFrame && !_playerMovement.IsGrounded)
+                if (boostPressedThisFrame && !_playerMovement.IsGrounded && _boostAvailable > 0)
                 {
                     DoBubbleBoost();
                 }
@@ -127,6 +137,7 @@ namespace GGJ.BubbleFall
             // Apply force backwards to launcher
             // _playerMovement.AddExternalVel(Vector2.up * boostVelocity);
             _boostCooldownTimer = boostCooldown;
+            _boostAvailable -= 1;
         }
 
         private void DoBubbleThrow(float strength)
@@ -176,7 +187,19 @@ namespace GGJ.BubbleFall
         private void LaunchBubble(Vector2 velocity, Vector2 position)
         {
             var bubble = Instantiate(bubblePrefab, position, Quaternion.identity);
+            _bubbleList.Add(bubble);
             bubble.Init(velocity);
+        }
+
+        public void Reset()
+        {
+            while (_bubbleList.Count > 0)
+            {
+                var bubble = _bubbleList[0];
+                _bubbleList.RemoveAt(0);
+                if (bubble)
+                    Destroy(bubble.gameObject);
+            }
         }
 
         //Callbacks
