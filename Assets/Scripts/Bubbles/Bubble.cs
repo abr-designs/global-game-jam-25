@@ -66,7 +66,10 @@ namespace GGJ.BubbleFall
         /// </summary>
         private Rigidbody2D m_rigidbody2D;
         private Collider2D m_collider2D;
-
+        [SerializeField]
+        private Rigidbody2D externalRigidbody2D;
+        [SerializeField]
+        private Collider2D externalCollider2D;
         //Movement Speed
         private Vector2 m_velocity;
 
