@@ -39,7 +39,8 @@ namespace GGJ.BubbleFall
 
         private PlayerMovementV2 _playerMovement;
         private Rigidbody2D _throwerRb;
-
+        [SerializeField]
+        private CaptiveGatherController captiveGatherController;
         //Unity Functions
         //============================================================================================================//
 
@@ -121,7 +122,8 @@ namespace GGJ.BubbleFall
         private void DoBubbleBoost()
         {
             var position = _playerMovement.bubbleDropLocation + Vector2.down * boostGap;
-            LaunchBubble(Vector2.down * 0.1f, position);
+            var bubble = Instantiate(bubblePrefab, position, Quaternion.identity);
+            LaunchBubble(Vector2.down * 0.1f, position, bubble);
             // Apply force backwards to launcher
             // _playerMovement.AddExternalVel(Vector2.up * boostVelocity);
             _boostCooldownTimer = boostCooldown;
@@ -137,13 +139,26 @@ namespace GGJ.BubbleFall
             // for now we always throw at max force
             var dir = GetMouseDirection();
             var position = _playerMovement.bubbleThrowLocation;
-            LaunchBubble(dir * vel, position);
+            if (captiveGatherController.TotalCaptives == 0)
+            {
+                var bubble = Instantiate(bubblePrefab, position, Quaternion.identity);
+                LaunchBubble(dir * vel, position, bubble);
+            }
+            else
+            {
+                var bubble = captiveGatherController.RequestCaptive();
+
+                LaunchBubble(dir * vel, position, bubble.transform.GetComponent<Bubble>());
+
+            }
+
             _throwCooldownTimer = throwCooldown;
         }
 
-        private void LaunchBubble(Vector2 velocity, Vector2 position)
+        private void LaunchBubble(Vector2 velocity, Vector2 position, Bubble bubble)
         {
-            var bubble = Instantiate(bubblePrefab, position, Quaternion.identity);
+            // var bubble = captiveGatherController.RequestCaptive();
+
             bubble.Init(velocity);
         }
 
