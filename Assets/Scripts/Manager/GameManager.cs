@@ -53,11 +53,7 @@ namespace GGJ.BubbleFall
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
-            var brain = Camera.main.GetComponent<CinemachineBrain>();
-            _vCamera = (CinemachineCamera)brain.ActiveVirtualCamera;
-
-
-
+            _vCamera = FindAnyObjectByType<CinemachineCamera>();
         }
 
         // Update is called once per frame
