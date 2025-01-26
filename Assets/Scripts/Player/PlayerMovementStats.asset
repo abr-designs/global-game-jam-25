@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: PlayerMovementStats
   m_EditorClassIdentifier: 
   MaxWalkSpeed: 12.5
-  GroundAcceleration: 24.2
+  GroundAcceleration: 12.7
   GroundDeceleration: 16
-  AirAcceleration: 1
+  AirAcceleration: 2
   AirDeceleration: 2
   MaxRunSpeed: 18
   GroundLayer:
@@ -25,6 +25,7 @@ MonoBehaviour:
   HeadDetectionRayLength: 0.1
   HeadWidth: 0.75
   JumpVelocity: 18
+  JumpHorizontalDampening: 0.5
   FallGravityMultiplier: 6
   MaxFallSpeed: 20
   JumpBufferTime: 0.125

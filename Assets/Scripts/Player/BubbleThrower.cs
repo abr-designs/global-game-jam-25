@@ -61,7 +61,7 @@ namespace GGJ.BubbleFall
             _playerMovement = GetComponent<PlayerMovementV2>();
             _throwerRb = GetComponent<Rigidbody2D>();
             _captiveGather = GetComponent<CaptiveGatherController>();
-            anim = GetComponent<Animator>();
+            anim = GetComponentInChildren<Animator>();
         }
 
         private void OnDisable()
@@ -133,6 +133,7 @@ namespace GGJ.BubbleFall
         private void DoBubbleBoost()
         {
             var position = _playerMovement.bubbleDropLocation + Vector2.down * boostGap;
+            anim.Play("Cast");
             LaunchBubble(Vector2.down * 0.1f, position);
             // Apply force backwards to launcher
             // _playerMovement.AddExternalVel(Vector2.up * boostVelocity);
@@ -150,7 +151,7 @@ namespace GGJ.BubbleFall
             // for now we always throw at max force
             var dir = GetMouseDirection();
             var position = _playerMovement.bubbleThrowLocation;
-            anim.SetBool("casting", true);
+            anim.Play("Cast");
             if (_captiveGather.TotalCaptives == 0)
             {
                 LaunchBubble(dir * vel, position);

@@ -87,7 +87,7 @@ namespace GGJ.BubbleFall
         {
             _isFacingRight = true;
             _rb = GetComponent<Rigidbody2D>();
-            anim = GetComponent<Animator>();
+            anim = GetComponentInChildren<Animator>();
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -348,6 +348,7 @@ namespace GGJ.BubbleFall
                 _isJumping = false;
                 _isFalling = false;
                 VerticalVelocity = Physics2D.gravity.y;
+                anim.SetBool("jumping", false);
             }
 
             return;
@@ -358,9 +359,8 @@ namespace GGJ.BubbleFall
         {
             if (!_isJumping)
             {
-                anim.SetBool("jumping", true);
+                anim.Play("Jump");
                 _isJumping = true;
-
             }
             _jumpBufferTimer = 0f;
             _moveVelocity.x = _moveVelocity.x * MoveStats.JumpHorizontalDampening;
@@ -386,8 +386,9 @@ namespace GGJ.BubbleFall
             }
             if (VerticalVelocity < 0f)
             {
-                anim.SetBool("jumping", false);
-                anim.SetBool("falling", true);
+                //anim.SetBool("jumping", false);
+                //anim.SetBool("falling", true);
+
             }
             // If we are falling we apply fall modifier
             // if (VerticalVelocity < 0f)
@@ -458,15 +459,14 @@ namespace GGJ.BubbleFall
         {
             if (Mathf.Abs(_moveInput.x) > 0 && _isGrounded)
             {
-                anim.SetBool("walking", true);
-
+                WalkAnimation(true);
                 var emission = dustParticleSystem.emission;
                 emission.enabled = true;
 
             }
             else
             {
-                anim.SetBool("walking", false);
+                WalkAnimation(false);
                 var emission = dustParticleSystem.emission;
                 emission.enabled = false;
             }
@@ -480,6 +480,23 @@ namespace GGJ.BubbleFall
                 playerModel.transform.forward = Vector3.left;
             }
 
+        }
+
+        private void WalkAnimation(bool isWalking)
+        {
+            bool animatorIsWalking = anim.GetCurrentAnimatorStateInfo(0).IsName("Walking");
+
+            if (isWalking)
+            {
+                Debug.Log("Trigger walk anim");
+                anim.SetBool("walking", true);
+                if (!animatorIsWalking)
+                    anim.Play("Walking");
+            }
+            else
+            {
+                anim.SetBool("walking", false);
+            }
         }
 
         #endregion
