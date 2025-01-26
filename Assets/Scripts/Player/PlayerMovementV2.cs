@@ -448,8 +448,17 @@ namespace GGJ.BubbleFall
 
         private void DoAnimations()
         {
-            if (Mathf.Abs(_moveInput.x) > 0 && _isGrounded && !dustParticleSystem.isPlaying)
-                dustParticleSystem.Play();
+            if (Mathf.Abs(_moveInput.x) > 0 && _isGrounded)
+            {
+                var emission = dustParticleSystem.emission;
+                emission.enabled = true;
+
+            }
+            else
+            {
+                var emission = dustParticleSystem.emission;
+                emission.enabled = false;
+            }
 
             if (_moveInput.x > 0)
             {
