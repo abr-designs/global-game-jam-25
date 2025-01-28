@@ -473,11 +473,11 @@ namespace GGJ.BubbleFall
 
             if (_moveInput.x > 0)
             {
-                playerModel.transform.forward = Vector3.right;
+                playerModel.transform.forward = Vector3.right + Vector3.down * .2f;
             }
             else if (_moveInput.x < 0)
             {
-                playerModel.transform.forward = Vector3.left;
+                playerModel.transform.forward = Vector3.left + Vector3.down * .2f;
             }
 
         }
