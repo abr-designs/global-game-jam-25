@@ -209,6 +209,13 @@ namespace GGJ.BubbleFall
             }
             else rayColor = Color.red;
 
+            // Parent player to moving platforms
+            if (_isGrounded && _groundHit.collider.GetComponent<MovingPlatform>())
+            {
+                transform.parent = _groundHit.collider.transform;
+            }
+            else { transform.parent = null; }
+
             Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2, boxCastOrigin.y), Vector2.down * MoveStats.GroundDetectionRayLength, rayColor);
             Debug.DrawRay(new Vector2(boxCastOrigin.x + boxCastSize.x / 2, boxCastOrigin.y), Vector2.down * MoveStats.GroundDetectionRayLength, rayColor);
             Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2, boxCastOrigin.y - MoveStats.GroundDetectionRayLength), Vector2.right * boxCastSize.x, rayColor);
@@ -471,6 +478,7 @@ namespace GGJ.BubbleFall
                 emission.enabled = false;
             }
 
+
             if (_moveInput.x > 0)
             {
                 playerModel.transform.forward = Vector3.right + Vector3.down * .2f;
@@ -478,6 +486,10 @@ namespace GGJ.BubbleFall
             else if (_moveInput.x < 0)
             {
                 playerModel.transform.forward = Vector3.left + Vector3.down * .2f;
+            }
+            else if (_moveInput.x == 0 && playerModel.transform.forward.x > 0)
+            {
+                playerModel.transform.forward = new Vector3(playerModel.transform.forward.x, 0, 0);
             }
 
         }
@@ -499,6 +511,13 @@ namespace GGJ.BubbleFall
         }
 
         #endregion
+
+        // When respawning we need to reset all values
+        public void Reset()
+        {
+            VerticalVelocity = 0f;
+            _externalVel = Vector2.zero;
+        }
 
 #if UNITY_EDITOR
 

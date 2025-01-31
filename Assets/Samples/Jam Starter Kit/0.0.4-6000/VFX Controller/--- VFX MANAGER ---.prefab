@@ -44,4 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed810f9539c92e24787ab21e499cdac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vfxDatas: []
+  vfxDatas:
+  - name: PlayerHit
+    type: 1
+    prefab: {fileID: 7398694519036343288, guid: 246a4b0d39c9f4e418305f18e8b53a8d, type: 3}
+    lifetime: 3

@@ -5,6 +5,7 @@ using Levels;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utilities;
 
 namespace GGJ.BubbleFall
 {
@@ -64,6 +65,7 @@ namespace GGJ.BubbleFall
                 case GAME_STATE.LOAD:
 
                     MusicController.Instance.PlayMusic(MUSIC.GAME);
+                    ScreenFader.ForceSetColorBlack();
 
                     // Load first level
                     LevelLoader.LoadFirstLevel();
@@ -98,7 +100,10 @@ namespace GGJ.BubbleFall
         {
             // Play any death cinematic etc
             Debug.Log("Respawning player!");
-            InitPlayer();
+            ScreenFader.FadeOut(1f, () =>
+            {
+                InitPlayer();
+            });
         }
 
         // Reset player position / health / ammo etc
@@ -106,6 +111,7 @@ namespace GGJ.BubbleFall
         private void InitPlayer(bool isStartSpawn = false)
         {
             GameInputDelegator.SetInputLock(true);
+
             if (isStartSpawn)
             {
                 var currentLevel = (PlatformLevel)LevelLoader.CurrentLevelDataDefinition;
@@ -114,14 +120,20 @@ namespace GGJ.BubbleFall
             }
 
             playerController.transform.position = playerController.LastSpawnLocation.transform.position;
+            playerController.Reset();
             playerController.GetComponent<PlayerHealth>().ResetHealth();
             playerController.GetComponent<CaptiveGatherController>().ResetCaptives();
             playerController.GetComponent<BubbleThrower>().Reset();
             playerController.gameObject.SetActive(true);
-            GameInputDelegator.SetInputLock(false);
 
             // Move camera
             _vCamera.ForceCameraPosition(transform.position, Quaternion.identity);
+
+            // Resume input once the fade is complete
+            ScreenFader.FadeIn(1f, () =>
+            {
+                GameInputDelegator.SetInputLock(false);
+            });
 
         }
     }

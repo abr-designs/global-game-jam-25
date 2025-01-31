@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using GameInput;
 using UnityEngine;
+using VisualFX;
 
 namespace GGJ.BubbleFall
 {
@@ -78,7 +79,7 @@ namespace GGJ.BubbleFall
         {
             GameInputDelegator.SetInputLock(true);
             _playerAnim.Play("Hit");
-            // TODO -- VFX here
+            VFX.BUBBLE_EXPLODE.PlayAtLocation(transform.position, 1, false);
             yield return new WaitForSeconds(damageTimerWindow / 2f);
             GameInputDelegator.SetInputLock(false);
         }
